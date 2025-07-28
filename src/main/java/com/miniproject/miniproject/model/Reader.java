@@ -1,8 +1,6 @@
 package com.miniproject.miniproject.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -19,19 +17,19 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Reader extends BaseEntity{
+public class Reader extends BaseEntity {
     @Id
     @Column(name = "reader_id")
     private String id;
 
-    @PrePersist//Auto generate ID if ID doesn't exist
+    @PrePersist // Auto generate ID if ID doesn't exist
     private void prePersist() {
         if (id == null) {
             id = UUID.randomUUID().toString();
         }
     }
 
-    //Relationship
+    // Relationship
     @OneToOne
     @JoinColumn(name = "user_id")
     @JsonBackReference(value = "user-reader")
@@ -39,7 +37,7 @@ public class Reader extends BaseEntity{
 
     @OneToMany(mappedBy = "reader", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value = "reader-bookOwnerShip")
-    List<BookOwership> bookOwershipList;
+    List<BookOwnership> bookOwnershipList;
 
     @OneToMany(mappedBy = "reader", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value = "reader-followings")
