@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Data
 @Getter
@@ -20,7 +20,7 @@ public class BookRequest {
     @NotBlank(message = "publishDate is required")
     private String publishDate;
     @NotBlank(message = "createdAt is required")
-    private LocalDateTime createdAt;
+    private Timestamp createdAt;
     @NotBlank(message = "lastUpdate Type is required")
-    private LocalDateTime lastUpdate;
+    private Timestamp lastUpdate;
 }
