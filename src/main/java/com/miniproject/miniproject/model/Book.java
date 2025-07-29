@@ -1,8 +1,6 @@
 package com.miniproject.miniproject.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,7 +8,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
 import java.util.List;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Getter
 @Setter
@@ -18,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "book")
-public class Book extends BaseEntity {
+public class Book {
     @Id
     @Column(name = "book_id")
     private String id;
@@ -42,7 +44,7 @@ public class Book extends BaseEntity {
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value = "book-bookOwnerShip")
-    private List<BookOwership> bookOwershipList;
+    private List<BookOwnership> bookOwnershipList;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value = "book-rates")
@@ -64,4 +66,12 @@ public class Book extends BaseEntity {
     @JoinColumn(name = "published_by")
     @JsonBackReference(value = "book-publishers")
     private Publisher publisher;
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private Timestamp createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private Timestamp updatedAt;
 }
