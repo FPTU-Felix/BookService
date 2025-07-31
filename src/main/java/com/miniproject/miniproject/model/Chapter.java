@@ -44,6 +44,9 @@ public class Chapter extends BaseEntity {
     @JsonBackReference(value = "book-chapters")
     private Book book;
 
+    @Column(name = "view")
+    private Integer view;
+
     @PrePersist//Auto generate ID if ID doesn't exist
     private void prePersist() {
         if (id == null) {

@@ -47,9 +47,12 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public ApiResponse<BookResponse> getBookById(String id) {
-        Book book = bookRepository.findById(id).orElse(null);
-        BookResponse bookResponse = mapToResponse(book);
-        return (book != null) ? new ApiResponse<>(String.valueOf(HttpStatus.OK), bookResponse, null) : new ApiResponse<>(String.valueOf(HttpStatus.NOT_FOUND), null, null); // Rut gon lai code ban
+        try {
+            Book result = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Book not found"));
+            return new ApiResponse<>("success", bookMapper.toDTO(result));
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     @Override
