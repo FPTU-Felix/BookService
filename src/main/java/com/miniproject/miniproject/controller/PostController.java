@@ -7,10 +7,12 @@ import com.miniproject.miniproject.dto.Response.ApiResponse;
 import com.miniproject.miniproject.dto.Response.CommentResponse;
 import com.miniproject.miniproject.dto.Response.PostResponse;
 import com.miniproject.miniproject.dto.Response.ReactionResponse;
+import com.miniproject.miniproject.model.MetaData;
 import com.miniproject.miniproject.service.CommentService;
 import com.miniproject.miniproject.service.PostService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +35,15 @@ public class PostController {
 
 
     //Post Section
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<PostResponse>>> getAllPostsSocial(@RequestParam(defaultValue = "0") int page,
+                                                                             @RequestParam(defaultValue = "10") int size) {
+        Page<PostResponse> postResponsePage = postService.getAllPostSocial(page, size);
+        MetaData metaData = new MetaData(page, size, 0, 0);
+        ApiResponse<List<PostResponse>> response = new ApiResponse<>(String.valueOf(HttpStatus.FOUND), postResponsePage.getContent(), metaData);
+        return new ResponseEntity<>(response, HttpStatus.FOUND);
+    }
+
     @GetMapping("/posts")
     public ResponseEntity<ApiResponse<List<PostResponse>>> getAllPosts() {
         List<PostResponse> list = postService.getAllPosts();
