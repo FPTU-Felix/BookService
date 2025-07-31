@@ -21,10 +21,10 @@ public class ReactionController {
     @Autowired
     private ReactionService reactionService;
 
-    @GetMapping
-    public ApiResponse<List<ReactionResponse>> getAllReaction() {
-        return reactionService.getAllReactions();
-    }
+//    @GetMapping
+//    public ApiResponse<List<ReactionResponse>> getAllReaction() {
+//        return reactionService.getAllReactions();
+//    }
 
     @PostMapping("/comment/{commentId}/reactions")
     public ResponseEntity<ApiResponse<ReactionResponse>> reactionComment(@PathVariable String commentId, Authentication authentication, @RequestBody ReactionRequest request) {

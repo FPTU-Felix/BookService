@@ -9,6 +9,7 @@ import com.miniproject.miniproject.dto.Response.ReactionResponse;
 import com.miniproject.miniproject.exception.AccessDeniedException;
 import com.miniproject.miniproject.exception.ResourceNotFoundException;
 import com.miniproject.miniproject.model.Comments;
+import com.miniproject.miniproject.model.Mapper.PostMapper;
 import com.miniproject.miniproject.model.Post;
 import com.miniproject.miniproject.model.Reaction;
 import com.miniproject.miniproject.model.User;
@@ -18,6 +19,10 @@ import com.miniproject.miniproject.repository.ReactionRepository;
 import com.miniproject.miniproject.repository.UserRepository;
 import com.miniproject.miniproject.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,13 +35,15 @@ public class PostServiceImpl implements PostService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final ReactionRepository reactionRepository;
+    private final PostMapper postMapper;
 
     @Autowired
-    public PostServiceImpl(PostRepository postRepository, UserRepository userRepository, CommentRepository commentRepository, ReactionRepository reactionRepository) {
+    public PostServiceImpl(PostRepository postRepository, UserRepository userRepository, CommentRepository commentRepository, ReactionRepository reactionRepository, PostMapper postMapper) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         this.commentRepository = commentRepository;
         this.reactionRepository = reactionRepository;
+        this.postMapper = postMapper;
     }
 
     @Override
@@ -46,9 +53,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponse getPostById(String id) {
-        Post post = postRepository.findById(id)
+        Post post = postRepository.findByIdWithImages(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Can't find Post with id =" + id));
-        return mapToResponse(post);
+        return postMapper.toPostResponse(post);
     }
 
     @Override
@@ -81,6 +88,18 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> searchPosts(String keyword) {
         return List.of();
+    }
+
+    @Override
+    public Page<PostResponse> getAllPostSocial(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+
+        // 2. Gọi phương thức findAll có sẵn của JpaRepository
+        Page<Post> postEntities = postRepository.findAll(pageable);
+
+        // 3. Chuyển đổi từ Page<Post> (Entity) sang Page<PostResponse> (DTO)
+        // Đối tượng Page có sẵn hàm .map() rất tiện lợi
+        return postEntities.map(postMapper::toPostResponse);// Giả sử bạn có constructor để map
     }
 
     @Override
@@ -120,6 +139,7 @@ public class PostServiceImpl implements PostService {
         b.setUpdated_at(comments.getUpdatedAt());
         return b;
     }
+
     private ReactionResponse mapToReactionResponse(Reaction reaction) {
         ReactionResponse b = new ReactionResponse();
         b.setType(reaction.getType());

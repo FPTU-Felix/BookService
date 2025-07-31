@@ -9,6 +9,7 @@ import com.miniproject.miniproject.dto.Response.CommentResponse;
 import com.miniproject.miniproject.dto.Response.PostResponse;
 import com.miniproject.miniproject.dto.Response.ReactionResponse;
 import com.miniproject.miniproject.model.Post;
+import org.springframework.data.domain.Page;
 
 public interface PostService {
 
@@ -25,4 +26,6 @@ public interface PostService {
     CommentResponse postNewComment(String postId, String userId, CommentRequest request);
 
     List<Post> searchPosts(String keyword);
+
+    Page<PostResponse> getAllPostSocial(int page, int size);
 }
