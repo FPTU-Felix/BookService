@@ -3,6 +3,8 @@ package com.miniproject.miniproject.service.implement;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.management.RuntimeErrorException;
+
 import com.miniproject.miniproject.Speicification.BookSpecification;
 import com.miniproject.miniproject.dto.Request.BookFilterRequest;
 import com.miniproject.miniproject.dto.Request.BookRequest;
@@ -31,7 +33,8 @@ public class BookServiceImpl implements BookService {
     private final PublisherRepository publisherRepository;
 
     @Autowired
-    public BookServiceImpl(BookRepository bookRepository, BookMapper bookMapper, PublisherRepository publisherRepository) {
+    public BookServiceImpl(BookRepository bookRepository, BookMapper bookMapper,
+            PublisherRepository publisherRepository) {
         this.bookMapper = bookMapper;
         this.bookRepository = bookRepository;
         this.publisherRepository = publisherRepository;
@@ -47,14 +50,21 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public ApiResponse<BookResponse> getBookById(String id) {
-        Book book = bookRepository.findById(id).orElse(null);
-        BookResponse bookResponse = mapToResponse(book);
-        return (book != null) ? new ApiResponse<>(String.valueOf(HttpStatus.OK), bookResponse, null) : new ApiResponse<>(String.valueOf(HttpStatus.NOT_FOUND), null, null); // Rut gon lai code ban
+        try {
+            System.out.println(id);
+            Book result = bookRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
+            BookResponse response = bookMapper.toDTO(result);
+            return new ApiResponse<>("Success", response);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     @Override
     public BookResponse addBook(BookRequest request, String publisherId) {
-        Publisher u = publisherRepository.findById(publisherId).orElseThrow(() -> new ResourceNotFoundException("Can't find User"));
+        Publisher u = publisherRepository.findById(publisherId)
+                .orElseThrow(() -> new ResourceNotFoundException("Can't find User"));
         Book b = mapToEntity(request);
         b.setPublisher(u);
         Book saved = bookRepository.save(b);
@@ -82,8 +92,8 @@ public class BookServiceImpl implements BookService {
             return new ApiResponse<>(
                     "success",
                     bookResponseList,
-                    new MetaData(bookPage.getNumber(), bookPage.getSize(), bookPage.getTotalPages(), bookPage.getTotalElements())
-            );
+                    new MetaData(bookPage.getNumber(), bookPage.getSize(), bookPage.getTotalPages(),
+                            bookPage.getTotalElements()));
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -94,15 +104,16 @@ public class BookServiceImpl implements BookService {
         bookRepository.deleteById(id);
     }
 
+    // @Override
+    // public Page<BookResponse> searchBooks(String title, String author, String
+    // publisher, String language, Integer minPage, Integer maxPage, Pageable
+    // pageable) {
+    // Page<Book> bookPage = bookRepository.searchBooks(title, author, publisher,
+    // language, minPage, maxPage, pageable);
+    // return bookPage.map(this::mapToResponse);
+    // }
 
-//    @Override
-//    public Page<BookResponse> searchBooks(String title, String author, String publisher, String language, Integer minPage, Integer maxPage, Pageable pageable) {
-//        Page<Book> bookPage = bookRepository.searchBooks(title, author, publisher, language, minPage, maxPage, pageable);
-//        return bookPage.map(this::mapToResponse);
-//    }
-
-
-    //Mapping DTO
+    // Mapping DTO
     private BookResponse mapToResponse(Book book) {
         BookResponse b = new BookResponse();
         b.setName(book.getName());
@@ -112,7 +123,7 @@ public class BookServiceImpl implements BookService {
         return b;
     }
 
-    //maping entity
+    // maping entity
     private Book mapToEntity(BookRequest request) {
         Book b = new Book();
         b.setName(request.getName());
