@@ -31,28 +31,30 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                .csrf(csrf -> csrf.disable())//tắt CSRF vì dùng REST API means Cross-Site Request Forgery
+                .csrf(csrf -> csrf.disable())// tắt CSRF vì dùng REST API means Cross-Site Request Forgery
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/v1/library/auth/**",
-                                "/api/v1/library/book/**",//Cho phép login, register
-                                "/swagger-ui/**", //Nếu có swagger
-                                "/v3/api-docs/**"
-                        ).permitAll()
-                        .anyRequest().authenticated()//Các route còn lại cần JWT
+                                "/api/v1/library/book/**", // Cho phép login, register
+                                "/api/v1/library/chapter/**",
+                                "/swagger-ui/**", // Nếu có swagger
+                                "/v3/api-docs/**")
+                        .permitAll()
+                        .anyRequest().authenticated()// Các route còn lại cần JWT
                 )
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)//Không dùng session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)// Không dùng session
                 )
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)// Gắn Filter kiểm tra JWT
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)// Gắn Filter kiểm
+                                                                                                     // tra JWT
                 .build();
     }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager(); //Dùng mặc định
+        return config.getAuthenticationManager(); // Dùng mặc định
     }
 
     @Bean

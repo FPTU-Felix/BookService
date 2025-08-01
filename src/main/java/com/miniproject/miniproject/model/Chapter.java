@@ -21,6 +21,7 @@ import java.util.UUID;
 public class Chapter extends BaseEntity {
     @Id
     @Column(name = "chapter_id")
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     @Column(name = "chapter_name")
     private String chapter_name;
@@ -47,10 +48,9 @@ public class Chapter extends BaseEntity {
     @Column(name = "view")
     private Integer view;
 
-    @PrePersist//Auto generate ID if ID doesn't exist
-    private void prePersist() {
-        if (id == null) {
-            id = UUID.randomUUID().toString();
-        }
-    }
+    @Column(name = "index")
+    private Integer chapterIndex;
+
+    @Column(name = "images")
+    private String images;
 }

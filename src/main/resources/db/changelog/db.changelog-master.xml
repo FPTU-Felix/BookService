@@ -18,4 +18,6 @@
     relativeToChangelogFile="false" />
   <include file="db/changelog/db.changelog-1.6-add-view-to-chapter.xml"
     relativeToChangelogFile="false" />
+  <include file="db/changelog/db.changelog-1.7-add-images-and-index-to-chapter.xml"
+    relativeToChangelogFile="false" />
 </databaseChangeLog>

@@ -1,6 +1,6 @@
 package com.miniproject.miniproject.dto.Response;
 
-import com.miniproject.miniproject.model.Chapter;
+import com.miniproject.miniproject.dto.Response.Chapter.ChapterResponse;
 import lombok.*;
 
 import java.util.List;

@@ -5,6 +5,8 @@ import com.miniproject.miniproject.dto.Response.CategoryResponse;
 import com.miniproject.miniproject.model.Book;
 import com.miniproject.miniproject.model.Chapter;
 import com.miniproject.miniproject.model.Rate;
+import com.miniproject.miniproject.model.Mapper.Chapter.ChapterMapper;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
