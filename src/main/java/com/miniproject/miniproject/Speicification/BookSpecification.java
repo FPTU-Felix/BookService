@@ -29,9 +29,11 @@ public class BookSpecification {
             }
 
             if (request.getCategory() != null && !request.getCategory().isBlank()) {
-                List<String> categories = Arrays.stream(request.getCategory().split(",")).map(String::trim).toList();
+                List<String> categories = Arrays.stream(request.getCategory().split(","))
+                        .map(s -> s.trim().toLowerCase()).toList();
                 Join<Book, BookCategory> bookBookCategoryJoin = root.join("bookCategories", JoinType.INNER);
-                predicate = cb.and(predicate, bookBookCategoryJoin.get("category").get("name").in(categories));
+                Expression<String> categoryName = cb.lower(bookBookCategoryJoin.get("category").get("name"));
+                predicate = cb.and(predicate, categoryName.in(categories));
             }
 
             return predicate;

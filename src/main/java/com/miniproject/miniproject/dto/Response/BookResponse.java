@@ -1,4 +1,6 @@
 package com.miniproject.miniproject.dto.Response;
+
+import com.miniproject.miniproject.dto.Response.Chapter.ChapterResponse;
 import lombok.*;
 
 import java.util.List;
@@ -17,4 +19,7 @@ public class BookResponse {
     private List<CategoryResponse> categories;
     private Double rate;
     private PublisherResponse publisher;
+    private List<FavoriteResponse> favorites;
+    private List<ChapterResponse> chapters;
+    private Integer viewCount;
 }

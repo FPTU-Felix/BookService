@@ -1,15 +1,17 @@
 package com.miniproject.miniproject.dto.Request;
 
+import com.miniproject.miniproject.dto.Response.BookResponse;
+import com.miniproject.miniproject.dto.Response.UserDTO;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+
 @Getter
 @Setter
 public class FavoriteRequest {
-    @NotBlank(message = "CreatedAt is required")
-    private LocalDateTime created_at;
-    @NotBlank(message = "UpdatedAt is required")
-    private LocalDateTime updated_at;
+    private String id;
+    private UserDTO user;
+    private BookResponse book;
 }

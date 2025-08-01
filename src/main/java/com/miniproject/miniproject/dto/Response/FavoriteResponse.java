@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class FavoriteResponse {
-    private LocalDateTime created_at;
-    private LocalDateTime updated_at;
+    private String id;
+    private UserDTO user;
+    
 }
