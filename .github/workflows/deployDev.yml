@@ -1,0 +1,22 @@
+name: CI/CD dev to EC2
+
+on:
+  push:
+    branches: [Dev]
+
+jobs:
+  deploy: 
+    runs-on: ubuntu-latest
+    
+    steps: 
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Java and Maven
+        uses: actions/setup-java@v3
+        with: 
+          java-version: '17'
+          distribution: 'temurin'
+      
+      - name: Build Jar
+        run: mvn clean package -DskipTests
