@@ -1,0 +1,46 @@
+name: CI/CD dev to EC2
+
+on:
+  push:
+    branches: [Dev]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Java and Maven
+        uses: actions/setup-java@v3
+        with:
+          java-version: "17"
+          distribution: "temurin"
+
+      - name: Build Jar
+        run: mvn clean package -DskipTests
+
+      # Decode the base64-encoded PEM file and set permissions
+      - name: Decode SSH key
+        run: |
+          echo "${{ secrets.ec2_public_key }}" | base64 -d > ec2-key.pem
+          chmod 600 ec2-key.pem
+
+      # Deploy to EC2
+      - name: Deploy to EC2
+        run: |
+          JAR_FILE=$(find target -maxdepth 1 -type f -name "*.jar" | grep -v '\.original$' | head -n1)
+          echo "Uploading $JAR_FILE"
+          scp -i ec2-key.pem -o StrictHostKeyChecking=no \
+            "$JAR_FILE" ec2-user@13.211.135.59:/home/ec2-user/BookService/
+
+          ssh -i ec2-key.pem -o StrictHostKeyChecking=no ec2-user@13.211.135.59 << 'EOF'
+            sudo systemctl daemon-reexec
+            sudo systemctl restart bookservice.service
+            sudo systemctl status bookservice.service --no-pager
+          EOF
+
+      # Clean up key
+      - name: Clean up SSH key
+        run: rm -f ec2-key.pem
