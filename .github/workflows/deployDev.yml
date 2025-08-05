@@ -37,8 +37,8 @@ jobs:
 
           ssh -i ec2-key.pem -o StrictHostKeyChecking=no ec2-user@13.211.135.59 << 'EOF'
             sudo systemctl daemon-reexec
-            sudo systemctl restart bookservice.service
-            sudo systemctl status bookservice.service --no-pager
+            sudo systemctl restart book-service.service
+            sudo systemctl status book-service.service --no-pager
           EOF
 
       # Clean up key

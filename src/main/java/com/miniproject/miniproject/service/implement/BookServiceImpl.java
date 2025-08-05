@@ -51,7 +51,8 @@ public class BookServiceImpl implements BookService {
     @Override
     public ApiResponse<BookResponse> getBookById(String id) {
         try {
-            Book result = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Book not found"));
+            Book result = bookRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
             return new ApiResponse<>("success", bookMapper.toDTO(result));
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
@@ -87,7 +88,7 @@ public class BookServiceImpl implements BookService {
             Page<Book> bookPage = bookRepository.findAll(spec, pageable);
             List<BookResponse> bookResponseList = bookPage.getContent().stream().map(bookMapper::toDTO).toList();
             return new ApiResponse<>(
-                    "success",
+                    "success testing cicd",
                     bookResponseList,
                     new MetaData(bookPage.getNumber(), bookPage.getSize(), bookPage.getTotalPages(),
                             bookPage.getTotalElements()));
