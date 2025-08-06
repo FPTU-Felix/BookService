@@ -11,6 +11,7 @@ import java.util.List;
 @Setter
 @Data
 public class PostResponse{
+    private String id;
     private String posted_by;
     private String title;
     private String content;
