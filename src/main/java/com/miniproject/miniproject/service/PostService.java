@@ -4,10 +4,8 @@ import java.util.List;
 
 import com.miniproject.miniproject.dto.Request.CommentRequest;
 import com.miniproject.miniproject.dto.Request.PostRequest;
-import com.miniproject.miniproject.dto.Request.ReactionRequest;
-import com.miniproject.miniproject.dto.Response.CommentResponse;
-import com.miniproject.miniproject.dto.Response.PostResponse;
-import com.miniproject.miniproject.dto.Response.ReactionResponse;
+import com.miniproject.miniproject.dto.Response.Social.CommentResponse;
+import com.miniproject.miniproject.dto.Response.Social.PostResponse;
 import com.miniproject.miniproject.model.Post;
 import org.springframework.data.domain.Page;
 

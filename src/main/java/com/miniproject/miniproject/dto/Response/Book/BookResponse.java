@@ -1,6 +1,9 @@
-package com.miniproject.miniproject.dto.Response;
+package com.miniproject.miniproject.dto.Response.Book;
 
+import com.miniproject.miniproject.dto.Response.CategoryResponse;
 import com.miniproject.miniproject.dto.Response.Chapter.ChapterResponse;
+import com.miniproject.miniproject.dto.Response.FavoriteResponse;
+import com.miniproject.miniproject.dto.Response.PublisherResponse;
 import lombok.*;
 
 import java.util.List;

@@ -1,23 +1,15 @@
 package com.miniproject.miniproject.service.implement;
 
 import com.miniproject.miniproject.dto.Request.CommentRequest;
-import com.miniproject.miniproject.dto.Request.ReactionRequest;
-import com.miniproject.miniproject.dto.Response.ApiResponse;
-import com.miniproject.miniproject.dto.Response.CommentResponse;
-import com.miniproject.miniproject.dto.Response.ReactionResponse;
+import com.miniproject.miniproject.dto.Response.Social.CommentResponse;
 import com.miniproject.miniproject.exception.AccessDeniedException;
 import com.miniproject.miniproject.exception.ResourceNotFoundException;
 import com.miniproject.miniproject.model.Comments;
-import com.miniproject.miniproject.model.Post;
-import com.miniproject.miniproject.model.Reaction;
 import com.miniproject.miniproject.model.User;
 import com.miniproject.miniproject.repository.CommentRepository;
-import com.miniproject.miniproject.repository.PostRepository;
-import com.miniproject.miniproject.repository.ReactionRepository;
 import com.miniproject.miniproject.repository.UserRepository;
 import com.miniproject.miniproject.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

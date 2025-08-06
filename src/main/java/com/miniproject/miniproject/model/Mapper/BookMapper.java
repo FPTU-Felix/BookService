@@ -1,6 +1,6 @@
 package com.miniproject.miniproject.model.Mapper;
 
-import com.miniproject.miniproject.dto.Response.BookResponse;
+import com.miniproject.miniproject.dto.Response.Book.BookResponse;
 import com.miniproject.miniproject.dto.Response.CategoryResponse;
 import com.miniproject.miniproject.model.Book;
 import com.miniproject.miniproject.model.Chapter;

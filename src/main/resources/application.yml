@@ -2,7 +2,7 @@ spring:
   application:
     name: miniproject
   profiles:
-    active: prod  # ← mặc định dùng môi trường dev, có thể đổi thành "prod" khi deploy
+    active: dev  # ← mặc định dùng môi trường dev, có thể đổi thành "prod" khi deploy
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
 

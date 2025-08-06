@@ -3,7 +3,7 @@ package com.miniproject.miniproject.service.implement;
 import com.miniproject.miniproject.dto.Request.CommentRequest;
 import com.miniproject.miniproject.dto.Request.ReactionRequest;
 import com.miniproject.miniproject.dto.Response.ApiResponse;
-import com.miniproject.miniproject.dto.Response.ReactionResponse;
+import com.miniproject.miniproject.dto.Response.Social.ReactionResponse;
 import com.miniproject.miniproject.exception.ResourceNotFoundException;
 import com.miniproject.miniproject.model.Comments;
 import com.miniproject.miniproject.model.Post;
@@ -14,14 +14,17 @@ import com.miniproject.miniproject.repository.PostRepository;
 import com.miniproject.miniproject.repository.ReactionRepository;
 import com.miniproject.miniproject.repository.UserRepository;
 import com.miniproject.miniproject.service.ReactionService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class ReactionServiceImpl implements ReactionService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
@@ -33,7 +36,7 @@ public class ReactionServiceImpl implements ReactionService {
         this.userRepository = userRepository;
         this.commentRepository = commentRepository;
         this.reactionRepository = reactionRepository;
-        this.postRepository=postRepository;
+        this.postRepository = postRepository;
     }
 
     @Override
@@ -69,11 +72,19 @@ public class ReactionServiceImpl implements ReactionService {
     public ReactionResponse reactionPost(String postId, String userId, ReactionRequest request) {
         Post p = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post not found!"));
         User u = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found!"));
-        Reaction newReaction = new Reaction();
-        newReaction.setType(request.getType());
-        newReaction.setPost(p);
-        newReaction.setUser(u);
-        Reaction savedReaction = reactionRepository.save(newReaction);
+        Optional<Reaction> existingReaction = reactionRepository.findByPostAndUser(p, u);
+        Reaction reactionToSave = new Reaction();
+        if (existingReaction.isPresent()) {
+            // 2. Nếu đã tồn tại, cập nhật lại type
+            reactionToSave = existingReaction.get();
+            reactionToSave.setType(request.getType()); // Cập nhật loại cảm xúc
+        } else {
+            reactionToSave = new Reaction();
+            reactionToSave.setType(request.getType());
+            reactionToSave.setPost(p);
+            reactionToSave.setUser(u);
+        }
+        Reaction savedReaction = reactionRepository.save(reactionToSave);
         return mapToResponse(savedReaction);
     }
 

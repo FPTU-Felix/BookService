@@ -1,6 +1,6 @@
 package com.miniproject.miniproject.model.Mapper;
 
-import com.miniproject.miniproject.dto.Response.PostResponse;
+import com.miniproject.miniproject.dto.Response.Social.PostResponse;
 import com.miniproject.miniproject.model.Post;
 import com.miniproject.miniproject.model.PostImage;
 import org.mapstruct.Mapper;
@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 public interface PostMapper {
     @Mapping(source = "postImages", target = "imageUrls")
     @Mapping(source = "user.id", target = "posted_by")
+    @Mapping(source = "user.username", target = "userName") // Giả sử tên trường trong User entity là userName
+    @Mapping(source = "user.avatar", target = "avatarUrl")
     PostResponse toPostResponse(Post post);
 
     // Thêm một default method để xử lý logic chuyển đổi

@@ -1,4 +1,4 @@
-package com.miniproject.miniproject.dto.Response;
+package com.miniproject.miniproject.dto.Response.Social;
 
 import lombok.Data;
 import lombok.Getter;
@@ -10,9 +10,9 @@ import java.util.List;
 @Getter
 @Setter
 @Data
-public class PostResponse{
+public class PostResponse extends AuthorGeneralResponse{
     private String id;
-    private String posted_by;
+    private String posted_by;//sua thanh them userName va avatar
     private String title;
     private String content;
     private List<String> imageUrls;

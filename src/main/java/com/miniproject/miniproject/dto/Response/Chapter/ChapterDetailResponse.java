@@ -2,7 +2,7 @@ package com.miniproject.miniproject.dto.Response.Chapter;
 
 import java.time.LocalDateTime;
 
-import com.miniproject.miniproject.dto.Response.BookResponse;
+import com.miniproject.miniproject.dto.Response.Book.BookResponse;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,10 +1,7 @@
 package com.miniproject.miniproject.service;
 
 import com.miniproject.miniproject.dto.Request.CommentRequest;
-import com.miniproject.miniproject.dto.Request.ReactionRequest;
-import com.miniproject.miniproject.dto.Response.ApiResponse;
-import com.miniproject.miniproject.dto.Response.CommentResponse;
-import com.miniproject.miniproject.dto.Response.ReactionResponse;
+import com.miniproject.miniproject.dto.Response.Social.CommentResponse;
 
 import java.util.List;
 
