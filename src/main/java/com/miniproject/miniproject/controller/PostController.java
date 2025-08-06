@@ -39,9 +39,9 @@ public class PostController {
     public ResponseEntity<ApiResponse<List<PostResponse>>> getAllPostsSocial(@RequestParam(defaultValue = "0") int page,
                                                                              @RequestParam(defaultValue = "10") int size) {
         Page<PostResponse> postResponsePage = postService.getAllPostSocial(page, size);
-        MetaData metaData = new MetaData(page, size, 0, 0);
-        ApiResponse<List<PostResponse>> response = new ApiResponse<>(String.valueOf(HttpStatus.FOUND), postResponsePage.getContent(), metaData);
-        return new ResponseEntity<>(response, HttpStatus.FOUND);
+        MetaData metaData = new MetaData(page, size, postResponsePage.getTotalPages(), postResponsePage.getTotalElements());
+        ApiResponse<List<PostResponse>> response = new ApiResponse<>(String.valueOf(HttpStatus.OK), postResponsePage.getContent(), metaData);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/posts")
@@ -55,7 +55,7 @@ public class PostController {
     public ResponseEntity<ApiResponse<PostResponse>> getPostById(@PathVariable String postId) { //
         PostResponse postResponse = postService.getPostById(postId);
         ApiResponse<PostResponse> response = new ApiResponse<>("Founded", postResponse, null);
-        return new ResponseEntity<>(response, HttpStatus.FOUND);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/posts")

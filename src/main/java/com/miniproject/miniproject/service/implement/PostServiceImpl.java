@@ -93,12 +93,9 @@ public class PostServiceImpl implements PostService {
     @Override
     public Page<PostResponse> getAllPostSocial(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
-
-        // 2. Gọi phương thức findAll có sẵn của JpaRepository
+        //Gọi phương thức findAll có sẵn của JpaRepository
         Page<Post> postEntities = postRepository.findAll(pageable);
-
-        // 3. Chuyển đổi từ Page<Post> (Entity) sang Page<PostResponse> (DTO)
-        // Đối tượng Page có sẵn hàm .map() rất tiện lợi
+        //Chuyển đổi từ Page<Post> (Entity) sang Page<PostResponse> (DTO)
         return postEntities.map(postMapper::toPostResponse);// Giả sử bạn có constructor để map
     }
 

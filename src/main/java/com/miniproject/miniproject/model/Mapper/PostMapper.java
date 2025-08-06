@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface PostMapper {
     @Mapping(source = "postImages", target = "imageUrls")
+    @Mapping(source = "user.id", target = "posted_by")
     PostResponse toPostResponse(Post post);
 
     // Thêm một default method để xử lý logic chuyển đổi
