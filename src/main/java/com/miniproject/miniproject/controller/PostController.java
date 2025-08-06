@@ -1,12 +1,8 @@
 package com.miniproject.miniproject.controller;
 
-import com.miniproject.miniproject.dto.Request.CommentRequest;
 import com.miniproject.miniproject.dto.Request.PostRequest;
-import com.miniproject.miniproject.dto.Request.ReactionRequest;
 import com.miniproject.miniproject.dto.Response.ApiResponse;
-import com.miniproject.miniproject.dto.Response.CommentResponse;
-import com.miniproject.miniproject.dto.Response.PostResponse;
-import com.miniproject.miniproject.dto.Response.ReactionResponse;
+import com.miniproject.miniproject.dto.Response.Social.PostResponse;
 import com.miniproject.miniproject.model.MetaData;
 import com.miniproject.miniproject.service.CommentService;
 import com.miniproject.miniproject.service.PostService;

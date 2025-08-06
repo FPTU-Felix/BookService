@@ -1,16 +1,12 @@
 package com.miniproject.miniproject.controller;
 
 import com.miniproject.miniproject.dto.Request.CommentRequest;
-import com.miniproject.miniproject.dto.Request.ReactionRequest;
 import com.miniproject.miniproject.dto.Response.ApiResponse;
-import com.miniproject.miniproject.dto.Response.CommentResponse;
-import com.miniproject.miniproject.dto.Response.ReactionResponse;
-import com.miniproject.miniproject.exception.ResourceNotFoundException;
+import com.miniproject.miniproject.dto.Response.Social.CommentResponse;
 import com.miniproject.miniproject.service.CommentService;
 import com.miniproject.miniproject.service.PostService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

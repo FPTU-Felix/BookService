@@ -1,4 +1,4 @@
-package com.miniproject.miniproject.dto.Response;
+package com.miniproject.miniproject.dto.Response.Social;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,8 +6,8 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 @Getter
 @Setter
-public class CommentResponse {
-    private String content;
+public class RateResponse {
+    private int score;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
 }

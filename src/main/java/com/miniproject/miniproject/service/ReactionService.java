@@ -2,8 +2,7 @@ package com.miniproject.miniproject.service;
 
 import com.miniproject.miniproject.dto.Request.ReactionRequest;
 import com.miniproject.miniproject.dto.Response.ApiResponse;
-import com.miniproject.miniproject.dto.Response.ReactionResponse;
-import com.miniproject.miniproject.model.Reaction;
+import com.miniproject.miniproject.dto.Response.Social.ReactionResponse;
 
 import java.util.List;
 

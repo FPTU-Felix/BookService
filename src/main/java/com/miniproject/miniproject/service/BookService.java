@@ -5,7 +5,7 @@ import java.util.List;
 import com.miniproject.miniproject.dto.Request.BookFilterRequest;
 import com.miniproject.miniproject.dto.Request.BookRequest;
 import com.miniproject.miniproject.dto.Response.ApiResponse;
-import com.miniproject.miniproject.dto.Response.BookResponse;
+import com.miniproject.miniproject.dto.Response.Book.BookResponse;
 
 public interface BookService {
 

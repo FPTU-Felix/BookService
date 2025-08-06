@@ -29,12 +29,12 @@ public class Reaction extends BaseEntity{
     @JsonBackReference(value = "user-reactions")
     private User user;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "post_id")
     @JsonBackReference(value = "post-reaction")
     private Post post;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "comment_id")
     @JsonBackReference(value = "comment-reaction")
     private Comments comments;

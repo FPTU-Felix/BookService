@@ -1,4 +1,4 @@
-package com.miniproject.miniproject.dto.Response;
+package com.miniproject.miniproject.dto.Response.Social;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -12,12 +12,14 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, String> {
-    @Query("SELECT p FROM Post p LEFT JOIN FETCH p.postImages WHERE p.id = :id")
-    Optional<Post> findByIdWithImages(@Param("id") String id);
+    @Override
+    @EntityGraph(attributePaths = {"postImages", "user"})
+        // Tải kèm cả danh sách images và đối tượng user
+    Page<Post> findAll(Pageable pageable);
 
     @Override
-    @EntityGraph(attributePaths = {"postImages", "user"}) // Tải kèm cả danh sách images và đối tượng user
-    Page<Post> findAll(Pageable pageable);
+    @EntityGraph(attributePaths = {"postImages", "user"})
+    Optional<Post> findById(String id);
     // Custom query methods can be defined here if needed
     // For example, to find posts by title:
     // List<Post> findByTitleContaining(String title);

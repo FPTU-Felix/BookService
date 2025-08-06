@@ -1,4 +1,4 @@
-package com.miniproject.miniproject.dto.Response;
+package com.miniproject.miniproject.dto.Response.Book;
 
 import lombok.Getter;
 import lombok.Setter;

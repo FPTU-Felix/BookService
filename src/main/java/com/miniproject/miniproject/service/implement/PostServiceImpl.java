@@ -2,10 +2,9 @@ package com.miniproject.miniproject.service.implement;
 
 import com.miniproject.miniproject.dto.Request.CommentRequest;
 import com.miniproject.miniproject.dto.Request.PostRequest;
-import com.miniproject.miniproject.dto.Request.ReactionRequest;
-import com.miniproject.miniproject.dto.Response.CommentResponse;
-import com.miniproject.miniproject.dto.Response.PostResponse;
-import com.miniproject.miniproject.dto.Response.ReactionResponse;
+import com.miniproject.miniproject.dto.Response.Social.CommentResponse;
+import com.miniproject.miniproject.dto.Response.Social.PostResponse;
+import com.miniproject.miniproject.dto.Response.Social.ReactionResponse;
 import com.miniproject.miniproject.exception.AccessDeniedException;
 import com.miniproject.miniproject.exception.ResourceNotFoundException;
 import com.miniproject.miniproject.model.Comments;
@@ -53,7 +52,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponse getPostById(String id) {
-        Post post = postRepository.findByIdWithImages(id)
+        Post post = postRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Can't find Post with id =" + id));
         return postMapper.toPostResponse(post);
     }
