@@ -25,5 +25,8 @@ public interface UserService {
     User getCurrentUserInfo();
 
     User findByUsername(String username);
+
+    User findByEmail(String email);
+    
     User findById(String id);
 }
