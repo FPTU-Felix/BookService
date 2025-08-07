@@ -28,7 +28,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            request.getUsername(),
+                            request.getEmail(),
                             request.getPassword()
                     )
             );
@@ -37,7 +37,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RuntimeException("Invalid username or password");
         }
 
-        User user = userRepository.findByUsername(request.getUsername()).orElseThrow(EntityNotFoundException::new);
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(EntityNotFoundException::new);
         UserDetails userDetails = new CustomerUserDetails(user);
 
         try {
@@ -45,8 +45,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             AuthenticationResponse authenticationResponse = new AuthenticationResponse(jwt,user.getUsername(),user.getFullName(),user.getEmail(), user.getAvatar(),user.getRoles());
             return new ApiResponse(String.valueOf(HttpStatus.OK), authenticationResponse, null);
         } catch (Exception e) {
-            System.out.println("❌ Token generation failed:");
-            e.printStackTrace();
             throw new RuntimeException("Token generation failed: " + e.getMessage());
         }
     }

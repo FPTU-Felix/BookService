@@ -61,7 +61,8 @@ public class UserServiceImpl implements UserService {
         if (principal instanceof CustomerUserDetails userDetails) {
             String userId = userDetails.getUserId();
             // Fetch full User entity from database
-            return userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User not found with ID: " + userId));
+            return userRepository.findById(userId)
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found with ID: " + userId));
         }
 
         throw new RuntimeException("User not authenticated");
@@ -86,6 +87,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(EntityNotFoundException::new);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
