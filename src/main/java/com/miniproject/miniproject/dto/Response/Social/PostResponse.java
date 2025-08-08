@@ -18,4 +18,12 @@ public class PostResponse extends AuthorGeneralResponse{
     private List<String> imageUrls;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
+    private int commentCount;
+    private int reactionCount;
+    private int likeCount;
+    private int loveCount;
+    private int hahaCount;
+    private int sadCount;
+    private int wowCount;
+    private int angryCount;
 }

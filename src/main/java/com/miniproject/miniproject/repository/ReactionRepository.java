@@ -15,7 +15,12 @@ public interface ReactionRepository extends JpaRepository<Reaction, String> {
     @Query("SELECT r FROM Reaction r WHERE r.post.id = :postId")
     List<Reaction> findReactionByPostId(@Param("postId") String postId);
 
-    Optional<Reaction> findByPostAndUser(Post post, User user);
+    Optional<Reaction> findByPost_IdAndUser_Id(String postId, String userId);
 
-    void deleteByPostIdAndUserId(String postId, String userId);
+    Optional<Reaction> findByComments_IdAndUser_Id(String commentId, String userId);
+
+    void deleteByPost_IdAndUserId(String postId, String userId);
+
+    void deleteByComments_IdAndUserId(String commentId, String userId);
+
 }
