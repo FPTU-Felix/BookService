@@ -46,9 +46,9 @@ public class Comments extends BaseEntity{
     @JsonBackReference(value = "chapter-comments")
     private Chapter chapter;
 
-    @OneToOne(mappedBy = "comments")
+    @OneToMany(mappedBy = "comments")
     @JsonManagedReference(value = "comment-reaction")
-    private Reaction reaction;
+    private List<Reaction> reactions;
 
     @ManyToOne
     @JoinColumn(name = "replied_to_id") // Foreign key column

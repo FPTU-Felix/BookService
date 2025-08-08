@@ -20,4 +20,6 @@
     relativeToChangelogFile="false" />
   <include file="db/changelog/db.changelog-1.7-add-images-and-index-to-chapter.xml"
     relativeToChangelogFile="false" />
+  <include file="db/changelog/db.changelog-1.8-fix-reaction-relationships.xml"
+           relativeToChangelogFile="false" />
 </databaseChangeLog>

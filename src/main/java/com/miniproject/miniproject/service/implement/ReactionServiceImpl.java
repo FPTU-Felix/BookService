@@ -4,6 +4,7 @@ import com.miniproject.miniproject.dto.Request.CommentRequest;
 import com.miniproject.miniproject.dto.Request.ReactionRequest;
 import com.miniproject.miniproject.dto.Response.ApiResponse;
 import com.miniproject.miniproject.dto.Response.Social.ReactionResponse;
+import com.miniproject.miniproject.exception.AccessDeniedException;
 import com.miniproject.miniproject.exception.ResourceNotFoundException;
 import com.miniproject.miniproject.model.Comments;
 import com.miniproject.miniproject.model.Post;
@@ -60,11 +61,17 @@ public class ReactionServiceImpl implements ReactionService {
     public ReactionResponse reactionComment(String commentId, String userId, ReactionRequest request) {
         Comments c = commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException("Comments not found!"));
         User u = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found!"));
-        Reaction newReaction = new Reaction();
-        newReaction.setType(request.getType());
-        newReaction.setComments(c);
-        newReaction.setUser(u);
-        Reaction savedReaction = reactionRepository.save(newReaction);
+        Optional<Reaction> existingReaction = reactionRepository.findByComments_IdAndUser_Id(c.getId(), u.getId());
+        Reaction reactionToSave = new Reaction();
+        if (existingReaction.isPresent()) {
+            reactionToSave = existingReaction.get();
+            reactionToSave.setType(request.getType());
+        } else {
+            reactionToSave.setType(request.getType());
+            reactionToSave.setComments(c);
+            reactionToSave.setUser(u);
+        }
+        Reaction savedReaction = reactionRepository.save(reactionToSave);
         return mapToResponse(savedReaction);
     }
 
@@ -72,20 +79,37 @@ public class ReactionServiceImpl implements ReactionService {
     public ReactionResponse reactionPost(String postId, String userId, ReactionRequest request) {
         Post p = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post not found!"));
         User u = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found!"));
-        Optional<Reaction> existingReaction = reactionRepository.findByPostAndUser(p, u);
+        Optional<Reaction> existingReaction = reactionRepository.findByPost_IdAndUser_Id(p.getId(), u.getId());
         Reaction reactionToSave = new Reaction();
         if (existingReaction.isPresent()) {
             // 2. Nếu đã tồn tại, cập nhật lại type
             reactionToSave = existingReaction.get();
             reactionToSave.setType(request.getType()); // Cập nhật loại cảm xúc
         } else {
-            reactionToSave = new Reaction();
             reactionToSave.setType(request.getType());
             reactionToSave.setPost(p);
             reactionToSave.setUser(u);
         }
         Reaction savedReaction = reactionRepository.save(reactionToSave);
         return mapToResponse(savedReaction);
+    }
+
+    @Override
+    public void removeReactionComment(String commentId, String userId) {
+        Comments c = commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException("Can't found Comment with" + commentId));
+        if (!c.getUser().getId().equals(userId)) {
+            throw new AccessDeniedException("You don't have permission to delete this");
+        }
+        reactionRepository.deleteByComments_IdAndUserId(commentId, userId);
+    }
+
+    @Override
+    public void removeReactionPost(String postId, String userId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Can't found Post with" + postId));
+        if (!post.getUser().getId().equals(userId)) {
+            throw new AccessDeniedException("You don't have permission to delete this");
+        }
+        reactionRepository.deleteByPost_IdAndUserId(postId, userId);
     }
 
     private ReactionResponse mapToResponse(Reaction reaction) {

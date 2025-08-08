@@ -3,6 +3,7 @@ package com.miniproject.miniproject.controller;
 import com.miniproject.miniproject.dto.Request.CommentRequest;
 import com.miniproject.miniproject.dto.Response.ApiResponse;
 import com.miniproject.miniproject.dto.Response.Social.CommentResponse;
+import com.miniproject.miniproject.security.CustomerUserDetails;
 import com.miniproject.miniproject.service.CommentService;
 import com.miniproject.miniproject.service.PostService;
 import jakarta.validation.Valid;
@@ -54,8 +55,8 @@ public class CommentController {
     public ResponseEntity<ApiResponse<CommentResponse>> postNewComment(@PathVariable String postId,
                                                                        Authentication authentication,
                                                                        @RequestBody @Valid CommentRequest request) {
-        String user_id = authentication.getName();
-        CommentResponse newComment = postService.postNewComment(postId, user_id, request);
+        CustomerUserDetails currentUser = (CustomerUserDetails)authentication.getPrincipal();
+        CommentResponse newComment = postService.postNewComment(postId, currentUser.getUserId(), request);
         ApiResponse<CommentResponse> response = new ApiResponse<>(String.valueOf(HttpStatus.OK), newComment, null);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
@@ -63,8 +64,8 @@ public class CommentController {
     @DeleteMapping("/comments/delete/{commentId}")
     public ResponseEntity<ApiResponse<?>> deleteComment(@PathVariable String commentId,
                                                         Authentication authentication) {
-        String user_id = authentication.getName();
-        commentService.deleteComment(commentId, user_id);
+        CustomerUserDetails currentUser = (CustomerUserDetails)authentication.getPrincipal();
+        commentService.deleteComment(commentId, currentUser.getUserId());
         ApiResponse<?> response = new ApiResponse<>("Delete Comment Successfully", null, null);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -73,8 +74,8 @@ public class CommentController {
     public ResponseEntity<ApiResponse<CommentResponse>> replyComment(@PathVariable String parentCommentId,
                                                                      @RequestBody @Valid CommentRequest request,
                                                                      Authentication authentication) {
-        String userId = authentication.getName();
-        CommentResponse replyComment = commentService.replyComment(userId, parentCommentId, request);
+        CustomerUserDetails currentUser = (CustomerUserDetails)authentication.getPrincipal();
+        CommentResponse replyComment = commentService.replyComment(currentUser.getUserId(), parentCommentId, request);
         ApiResponse<CommentResponse> response = new ApiResponse<>("Reply created successfully", replyComment, null);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }

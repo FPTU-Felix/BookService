@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 
 import java.util.List;
 import java.util.UUID;
@@ -48,13 +49,39 @@ public class Post extends BaseEntity{
     @JsonManagedReference(value = "post-postImg")
     private List<PostImage> postImages;
 
-    @OneToOne(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value = "post-reaction")
-    private Reaction reaction;
+    private List<Reaction> reactions;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value = "post-comments")
     private List<Comments> comments;
+
+    // Hibernate sẽ tự động chạy câu lệnh SELECT count(*) này để lấy giá trị cho trường commentCount
+    @Formula("(SELECT count(*) FROM comment c WHERE c.post_id = post_id)")
+    private int commentCount;
+
+    // Tương tự, tính tổng số reaction cho bài post này
+    @Formula("(SELECT count(*) FROM reaction r WHERE r.post_id = post_id)")
+    private int allReactionCount;
+
+    @Formula("(SELECT count(*) FROM reaction r WHERE r.post_id = post_id AND r.type = 'LIKE')")
+    private int likeCount;
+
+    @Formula("(SELECT count(*) FROM reaction r WHERE r.post_id = post_id AND r.type = 'LOVE')")
+    private int loveCount;
+
+    @Formula("(SELECT count(*) FROM reaction r WHERE r.post_id = post_id AND r.type = 'HAHA')")
+    private int hahaCount;
+
+    @Formula("(SELECT count(*) FROM reaction r WHERE r.post_id = post_id AND r.type = 'SAD')")
+    private int sadCount;
+
+    @Formula("(SELECT count(*) FROM reaction r WHERE r.post_id = post_id AND r.type = 'WOW')")
+    private int wowCount;
+
+    @Formula("(SELECT count(*) FROM reaction r WHERE r.post_id = post_id AND r.type = 'Angry')")
+    private int angryCount;
 
     @PrePersist//Auto generate ID if ID doesn't exist
     private void prePersist(){

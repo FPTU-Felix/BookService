@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="1.8-drop-reaction-post-unique-constraint" author="felix">
+        <preConditions onFail="MARK_RAN">
+            <uniqueConstraintExists tableName="reaction" constraintName="UKp8wcyqka9ehaxqcxuh8mqpxe"/>
+        </preConditions>
+        <dropUniqueConstraint tableName="reaction" constraintName="UKp8wcyqka9ehaxqcxuh8mqpxe"/>
+        <rollback/>
+    </changeSet>
+
+    <changeSet id="1.9-drop-reaction-comment-unique-constraint" author="felix">
+        <preConditions onFail="MARK_RAN">
+            <uniqueConstraintExists tableName="reaction" constraintName="UK2poykc2aw0p8tyycb8phsnrwf"/>
+        </preConditions>
+        <dropUniqueConstraint tableName="reaction" constraintName="UK2poykc2aw0p8tyycb8phsnrwf"/>
+        <rollback/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -4,6 +4,7 @@ import com.miniproject.miniproject.dto.Request.PostRequest;
 import com.miniproject.miniproject.dto.Response.ApiResponse;
 import com.miniproject.miniproject.dto.Response.Social.PostResponse;
 import com.miniproject.miniproject.model.MetaData;
+import com.miniproject.miniproject.security.CustomerUserDetails;
 import com.miniproject.miniproject.service.CommentService;
 import com.miniproject.miniproject.service.PostService;
 import jakarta.validation.Valid;
@@ -50,14 +51,14 @@ public class PostController {
     @GetMapping("/posts/{postId}")
     public ResponseEntity<ApiResponse<PostResponse>> getPostById(@PathVariable String postId) { //
         PostResponse postResponse = postService.getPostById(postId);
-        ApiResponse<PostResponse> response = new ApiResponse<>("Founded", postResponse, null);
+        ApiResponse<PostResponse> response = new ApiResponse<>("Success", postResponse, null);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/posts")
     public ResponseEntity<ApiResponse<PostResponse>> addPost(@RequestBody @Valid PostRequest request, Authentication authentication) {
-        String user_id = authentication.getName();
-        PostResponse postRes = postService.addPost(request, user_id);
+        CustomerUserDetails currentUser = (CustomerUserDetails)authentication.getPrincipal();
+        PostResponse postRes = postService.addPost(request, currentUser.getUserId());
         ApiResponse<PostResponse> apiResponse = new ApiResponse<>("Created Successfully", postRes, null);
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
@@ -71,8 +72,8 @@ public class PostController {
 
     @DeleteMapping("/posts/{postId}")
     public ResponseEntity<ApiResponse<?>> deletePost(@PathVariable String postId, Authentication authentication) {
-        String current_user_id = authentication.getName();
-        postService.deletePost(postId, current_user_id);
+        CustomerUserDetails currentUser = (CustomerUserDetails)authentication.getPrincipal();
+        postService.deletePost(postId, currentUser.getUserId());
         ApiResponse<?> response = new ApiResponse<>("Deleted Post Successfully", null, null);
         return ResponseEntity.ok(response);
     }

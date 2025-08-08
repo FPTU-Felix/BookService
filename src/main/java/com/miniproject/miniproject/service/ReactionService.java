@@ -14,4 +14,8 @@ public interface ReactionService {
     ReactionResponse reactionComment(String commentId, String userId, ReactionRequest request);
 
     ReactionResponse reactionPost(String postId, String userId, ReactionRequest request);
+
+    void removeReactionComment(String commentId, String userId);
+
+    void removeReactionPost(String postId, String userId);
 }

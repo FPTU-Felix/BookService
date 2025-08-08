@@ -26,7 +26,7 @@ public class ReactionController {
 //        return reactionService.getAllReactions();
 //    }
 
-    @PostMapping("/comment/{commentId}/reactions")
+    @PutMapping("/comment/{commentId}/reactions")
     public ResponseEntity<ApiResponse<ReactionResponse>> reactionComment(@PathVariable String commentId,
                                                                          Authentication authentication,
                                                                          @RequestBody @Valid ReactionRequest request) {
@@ -40,11 +40,13 @@ public class ReactionController {
     public ResponseEntity<ApiResponse<ReactionResponse>> removeReactionComment(@PathVariable String commentId,
                                                                                Authentication authentication,
                                                                                @RequestBody @Valid ReactionRequest request) {
-        String user_id = authentication.getName();
-        return null;
+        CustomerUserDetails currentUser = (CustomerUserDetails)authentication.getPrincipal();
+        reactionService.removeReactionComment(commentId,currentUser.getUserId());
+        ApiResponse<ReactionResponse> response = new ApiResponse<>("Deleted Successfully", null, null);
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
-    @PostMapping("/posts/{postId}/reaction")
+    @PutMapping("/posts/{postId}/reaction")
     public ResponseEntity<ApiResponse<ReactionResponse>> reactionPost(@PathVariable String postId,
                                                                       Authentication authentication,
                                                                       @RequestBody @Valid ReactionRequest request) {
@@ -58,7 +60,9 @@ public class ReactionController {
     public ResponseEntity<ApiResponse<ReactionResponse>> removeReactionPost(@PathVariable String postId,
                                                                             Authentication authentication,
                                                                             @RequestBody @Valid ReactionRequest request) {
-        String user_id = authentication.getName();
-        return null;
+        CustomerUserDetails currentUser = (CustomerUserDetails)authentication.getPrincipal();
+        reactionService.removeReactionPost(postId,currentUser.getUserId());
+        ApiResponse<ReactionResponse> response = new ApiResponse<>("Deleted Successfully", null, null);
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 }
