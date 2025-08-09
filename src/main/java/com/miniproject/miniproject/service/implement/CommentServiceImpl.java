@@ -5,6 +5,7 @@ import com.miniproject.miniproject.dto.Response.Social.CommentResponse;
 import com.miniproject.miniproject.exception.AccessDeniedException;
 import com.miniproject.miniproject.exception.ResourceNotFoundException;
 import com.miniproject.miniproject.model.Comments;
+import com.miniproject.miniproject.model.Mapper.CommentMapper;
 import com.miniproject.miniproject.model.User;
 import com.miniproject.miniproject.repository.CommentRepository;
 import com.miniproject.miniproject.repository.UserRepository;
@@ -20,11 +21,13 @@ public class CommentServiceImpl implements CommentService {
 
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+    private final CommentMapper commentMapper;
 
     @Autowired
-    public CommentServiceImpl(UserRepository userRepository, CommentRepository commentRepository) {
+    public CommentServiceImpl(UserRepository userRepository, CommentRepository commentRepository, CommentMapper commentMapper) {
         this.userRepository = userRepository;
         this.commentRepository = commentRepository;
+        this.commentMapper = commentMapper;
     }
 
     @Override
@@ -38,7 +41,7 @@ public class CommentServiceImpl implements CommentService {
     public List<CommentResponse> getCommentsByPostID(String postId) {
         List<Comments> list = commentRepository.findCommentsByPostId(postId);
         if (!list.isEmpty()) {
-            return list.stream().map(this::mapToResponse).collect(Collectors.toList());
+            return list.stream().map(commentMapper::toDTO).collect(Collectors.toList());
         } else throw new ResourceNotFoundException("Comment Not Found!");
     }
 

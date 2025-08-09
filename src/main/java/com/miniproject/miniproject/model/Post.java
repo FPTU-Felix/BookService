@@ -80,7 +80,7 @@ public class Post extends BaseEntity{
     @Formula("(SELECT count(*) FROM reaction r WHERE r.post_id = post_id AND r.type = 'WOW')")
     private int wowCount;
 
-    @Formula("(SELECT count(*) FROM reaction r WHERE r.post_id = post_id AND r.type = 'Angry')")
+    @Formula("(SELECT count(*) FROM reaction r WHERE r.post_id = post_id AND r.type = 'ANGRY')")
     private int angryCount;
 
     @PrePersist//Auto generate ID if ID doesn't exist
