@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 
 import java.util.List;
 import java.util.UUID;
@@ -58,6 +59,30 @@ public class Comments extends BaseEntity{
     @OneToMany(mappedBy = "repliedTo", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value = "repliedTo")
     private List<Comments> replies;
+
+    @Formula("(SELECT count(*) FROM comment rep WHERE rep.replied_to_id = comment_id)")
+    private int replyCount;
+
+    // Đếm số lượng 'LIKE'
+    @Formula("(SELECT count(*) FROM reaction r WHERE r.comment_id = comment_id AND r.type = 'LIKE')")
+    private int likeCount;
+
+    // Đếm số lượng 'LOVE'
+    @Formula("(SELECT count(*) FROM reaction r WHERE r.comment_id = comment_id AND r.type = 'LOVE')")
+    private int loveCount;
+
+    // Đếm số lượng 'HAHA'
+    @Formula("(SELECT count(*) FROM reaction r WHERE r.comment_id = comment_id AND r.type = 'HAHA')")
+    private int hahaCount;
+
+    @Formula("(SELECT count(*) FROM reaction r WHERE r.comment_id = comment_id AND r.type = 'SAD')")
+    private int sadCount;
+
+    @Formula("(SELECT count(*) FROM reaction r WHERE r.comment_id = comment_id AND r.type = 'WOW')")
+    private int wowCount;
+
+    @Formula("(SELECT count(*) FROM reaction r WHERE r.comment_id = comment_id AND r.type = 'ANGRY')")
+    private int angryCount;
 
     @PrePersist//Auto generate ID if ID doesn't exist
     private void prePersist() {
