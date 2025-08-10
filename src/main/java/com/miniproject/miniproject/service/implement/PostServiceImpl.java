@@ -135,12 +135,4 @@ public class PostServiceImpl implements PostService {
         b.setUpdated_at(comments.getUpdatedAt());
         return b;
     }
-
-    private ReactionResponse mapToReactionResponse(Reaction reaction) {
-        ReactionResponse b = new ReactionResponse();
-        b.setType(reaction.getType());
-        b.setCreated_at(reaction.getCreatedAt());
-        b.setUpdated_at(reaction.getUpdatedAt());
-        return b;
-    }
 }

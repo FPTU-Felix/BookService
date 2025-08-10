@@ -19,6 +19,7 @@ import java.util.UUID;
 public class Reaction extends BaseEntity{
     @Id
     @Column(name = "reaction_id")
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String reaction_id;
 
     @Column(name = "type")
@@ -38,11 +39,4 @@ public class Reaction extends BaseEntity{
     @JoinColumn(name = "comment_id")
     @JsonBackReference(value = "comment-reaction")
     private Comments comments;
-
-    @PrePersist//Auto generate ID if ID doesn't exist
-    private void prePersist(){
-        if(reaction_id==null){
-            reaction_id = UUID.randomUUID().toString();
-        }
-    }
 }

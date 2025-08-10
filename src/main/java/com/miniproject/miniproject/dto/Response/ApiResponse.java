@@ -9,11 +9,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @Getter
 @Setter
 @NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)  // <- exclude metadata if null
+@JsonInclude(JsonInclude.Include.NON_NULL) // <- exclude metadata if null
 public class ApiResponse<T> {
     private String status;
     private T data;
     private MetaData metadata;
+
+    public ApiResponse(String status) {
+        this.status = status;
+    }
 
     public ApiResponse(String status, T data) {
         this.status = status;

@@ -21,15 +21,15 @@ public class ReactionController {
     @Autowired
     private ReactionService reactionService;
 
-//    @GetMapping
-//    public ApiResponse<List<ReactionResponse>> getAllReaction() {
-//        return reactionService.getAllReactions();
-//    }
+    // @GetMapping
+    // public ApiResponse<List<ReactionResponse>> getAllReaction() {
+    // return reactionService.getAllReactions();
+    // }
 
     @PutMapping("/comment/{commentId}/reactions")
     public ResponseEntity<ApiResponse<ReactionResponse>> reactionComment(@PathVariable String commentId,
-                                                                         Authentication authentication,
-                                                                         @RequestBody @Valid ReactionRequest request) {
+            Authentication authentication,
+            @RequestBody @Valid ReactionRequest request) {
         String user_id = authentication.getName();
         ReactionResponse newReaction = reactionService.reactionComment(commentId, user_id, request);
         ApiResponse<ReactionResponse> response = new ApiResponse<>(String.valueOf(HttpStatus.OK), newReaction, null);
@@ -38,31 +38,34 @@ public class ReactionController {
 
     @DeleteMapping("/comment/{commentId}/reactions")
     public ResponseEntity<ApiResponse<ReactionResponse>> removeReactionComment(@PathVariable String commentId,
-                                                                               Authentication authentication,
-                                                                               @RequestBody @Valid ReactionRequest request) {
-        CustomerUserDetails currentUser = (CustomerUserDetails)authentication.getPrincipal();
-        reactionService.removeReactionComment(commentId,currentUser.getUserId());
+            Authentication authentication,
+            @RequestBody @Valid ReactionRequest request) {
+        CustomerUserDetails currentUser = (CustomerUserDetails) authentication.getPrincipal();
+        reactionService.removeReactionComment(commentId, currentUser.getUserId());
         ApiResponse<ReactionResponse> response = new ApiResponse<>("Deleted Successfully", null, null);
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("/posts/{postId}/reaction")
     public ResponseEntity<ApiResponse<ReactionResponse>> reactionPost(@PathVariable String postId,
-                                                                      Authentication authentication,
-                                                                      @RequestBody @Valid ReactionRequest request) {
-        CustomerUserDetails currentUser = (CustomerUserDetails)authentication.getPrincipal();
+            Authentication authentication,
+            @RequestBody @Valid ReactionRequest request) {
+        CustomerUserDetails currentUser = (CustomerUserDetails) authentication.getPrincipal();
         ReactionResponse newReaction = reactionService.reactionPost(postId, currentUser.getUserId(), request);
         ApiResponse<ReactionResponse> response = new ApiResponse<>(String.valueOf(HttpStatus.OK), newReaction, null);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/posts/{postId}/reactions")
-    public ResponseEntity<ApiResponse<ReactionResponse>> removeReactionPost(@PathVariable String postId,
-                                                                            Authentication authentication,
-                                                                            @RequestBody @Valid ReactionRequest request) {
-        CustomerUserDetails currentUser = (CustomerUserDetails)authentication.getPrincipal();
-        reactionService.removeReactionPost(postId,currentUser.getUserId());
+    public ResponseEntity<ApiResponse<ReactionResponse>> removeReactionPost(@PathVariable String postId) {
+        reactionService.removeReactionPost(postId);
         ApiResponse<ReactionResponse> response = new ApiResponse<>("Deleted Successfully", null, null);
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/posts/{postId}/reactions")
+    public ResponseEntity<ApiResponse<Void>> upsertReaction(@PathVariable String postId, @RequestBody @Valid ReactionRequest request){
+        reactionService.upsertReaction(request, postId);
+        return new ResponseEntity<>(new ApiResponse<>("Success"), HttpStatus.OK);
     }
 }

@@ -17,5 +17,7 @@ public interface ReactionService {
 
     void removeReactionComment(String commentId, String userId);
 
-    void removeReactionPost(String postId, String userId);
+    void removeReactionPost(String postId);
+
+    void upsertReaction(ReactionRequest request, String postId);
 }

@@ -5,6 +5,7 @@ import com.miniproject.miniproject.dto.Request.ReactionRequest;
 import com.miniproject.miniproject.dto.Response.ApiResponse;
 import com.miniproject.miniproject.dto.Response.Social.ReactionResponse;
 import com.miniproject.miniproject.exception.AccessDeniedException;
+import com.miniproject.miniproject.exception.BadRequestException;
 import com.miniproject.miniproject.exception.ResourceNotFoundException;
 import com.miniproject.miniproject.model.Comments;
 import com.miniproject.miniproject.model.Post;
@@ -14,15 +15,20 @@ import com.miniproject.miniproject.repository.CommentRepository;
 import com.miniproject.miniproject.repository.PostRepository;
 import com.miniproject.miniproject.repository.ReactionRepository;
 import com.miniproject.miniproject.repository.UserRepository;
+import com.miniproject.miniproject.security.CustomerUserDetails;
 import com.miniproject.miniproject.service.ReactionService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import javax.management.RuntimeErrorException;
 
 @Service
 @Transactional
@@ -33,7 +39,8 @@ public class ReactionServiceImpl implements ReactionService {
     private final PostRepository postRepository;
 
     @Autowired
-    public ReactionServiceImpl(UserRepository userRepository, CommentRepository commentRepository, ReactionRepository reactionRepository, PostRepository postRepository) {
+    public ReactionServiceImpl(UserRepository userRepository, CommentRepository commentRepository,
+            ReactionRepository reactionRepository, PostRepository postRepository) {
         this.userRepository = userRepository;
         this.commentRepository = commentRepository;
         this.reactionRepository = reactionRepository;
@@ -54,12 +61,14 @@ public class ReactionServiceImpl implements ReactionService {
         if (!list.isEmpty()) {
             return list.stream().map(this::mapToResponse)
                     .collect(Collectors.toList());
-        } else throw new ResourceNotFoundException("Reaction not Found!");
+        } else
+            throw new ResourceNotFoundException("Reaction not Found!");
     }
 
     @Override
     public ReactionResponse reactionComment(String commentId, String userId, ReactionRequest request) {
-        Comments c = commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException("Comments not found!"));
+        Comments c = commentRepository.findById(commentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Comments not found!"));
         User u = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found!"));
         Optional<Reaction> existingReaction = reactionRepository.findByComments_IdAndUser_Id(c.getId(), u.getId());
         Reaction reactionToSave = new Reaction();
@@ -96,7 +105,8 @@ public class ReactionServiceImpl implements ReactionService {
 
     @Override
     public void removeReactionComment(String commentId, String userId) {
-        Comments c = commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException("Can't found Comment with" + commentId));
+        Comments c = commentRepository.findById(commentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Can't found Comment with" + commentId));
         if (!c.getUser().getId().equals(userId)) {
             throw new AccessDeniedException("You don't have permission to delete this");
         }
@@ -104,27 +114,66 @@ public class ReactionServiceImpl implements ReactionService {
     }
 
     @Override
-    public void removeReactionPost(String postId, String userId) {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Can't found Post with" + postId));
-        if (!post.getUser().getId().equals(userId)) {
-            throw new AccessDeniedException("You don't have permission to delete this");
+    @Transactional
+    public void removeReactionPost(String postId) {
+        try {
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (principal instanceof CustomerUserDetails userDetails) {
+                String userId = userDetails.getUserId();
+                Reaction reaction = reactionRepository.findByPost_IdAndUser_Id(postId, userId)
+                        .orElseThrow(() -> new ResourceNotFoundException("Can't found Post with" + postId));
+                if (!reaction.getUser().getId().equals(userId)) {
+                    throw new AccessDeniedException("You don't have permission to delete this");
+                }
+                reactionRepository.deleteByPost_IdAndUserId(postId, userId);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException("Something went wrong");
         }
-        reactionRepository.deleteByPost_IdAndUserId(postId, userId);
     }
 
     private ReactionResponse mapToResponse(Reaction reaction) {
         ReactionResponse b = new ReactionResponse();
         b.setType(reaction.getType());
-        b.setCreated_at(reaction.getCreatedAt());
-        b.setUpdated_at(reaction.getUpdatedAt());
+        b.setReaction_id(reaction.getReaction_id());
         return b;
     }
 
-    //maping entity
+    // maping entity
     private Comments mapToEntity(CommentRequest request) {
         Comments b = new Comments();
         b.setContent(request.getContent());
         return b;
+    }
+
+    @Override
+    @Transactional
+    public void upsertReaction(ReactionRequest request, String postId) {
+        try {
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (principal instanceof CustomerUserDetails userDetails) {
+                String userId = userDetails.getUserId();
+                User user = userRepository.findById(userId)
+                        .orElseThrow(() -> new BadRequestException("User not found"));
+                Post post = postRepository.findById(postId)
+                        .orElseThrow(() -> new RuntimeException("Something went wrong1"));
+                if (request.getReactionId() == null) {
+                    Reaction result = reactionRepository.save(new Reaction(null, request.getType(), user, post, null));
+                } else {
+                    String reactionId = request.getReactionId();
+                    Reaction existingReaction = reactionRepository.findById(reactionId)
+                            .orElseThrow(() -> new RuntimeException("Something went wrong1"));
+                    ;
+                    if (existingReaction.getType() != request.getType()) {
+                        existingReaction.setType(request.getType());
+                        reactionRepository.save(existingReaction);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Something went wrong");
+        }
     }
 
 }
