@@ -10,10 +10,12 @@ import java.util.List;
 @Getter
 @Setter
 @Data
-public class PostResponse extends AuthorGeneralResponse{
+public class PostResponse extends AuthorGeneralResponse {
     private String id;
-    private String posted_by;//sua thanh them userName va avatar
+    private String posted_by;// sua thanh them userName va avatar
     private String title;
+    private String userName;
+    private String avatarUrl;
     private String content;
     private List<String> imageUrls;
     private LocalDateTime created_at;
@@ -26,4 +28,6 @@ public class PostResponse extends AuthorGeneralResponse{
     private int sadCount;
     private int wowCount;
     private int angryCount;
+    private List<ReactionResponse> reactions;
+    private ReactionResponse currentUserReaction;
 }

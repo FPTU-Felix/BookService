@@ -9,4 +9,5 @@ import lombok.Setter;
 public class ReactionRequest {
     @NotBlank(message = "Type is required")
     private String type;
+    private String reactionId;
 }
