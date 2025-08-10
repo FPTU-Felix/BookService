@@ -60,7 +60,7 @@ public class PostController {
         CustomerUserDetails currentUser = (CustomerUserDetails)authentication.getPrincipal();
         PostResponse postRes = postService.addPost(request, currentUser.getUserId());
         ApiResponse<PostResponse> apiResponse = new ApiResponse<>("Created Successfully", postRes, null);
-        return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @PutMapping("/posts/{postId}")
