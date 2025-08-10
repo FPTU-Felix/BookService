@@ -33,7 +33,7 @@ public class ReactionController {
         String user_id = authentication.getName();
         ReactionResponse newReaction = reactionService.reactionComment(commentId, user_id, request);
         ApiResponse<ReactionResponse> response = new ApiResponse<>(String.valueOf(HttpStatus.OK), newReaction, null);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/comment/{commentId}/reactions")
@@ -53,7 +53,7 @@ public class ReactionController {
         CustomerUserDetails currentUser = (CustomerUserDetails) authentication.getPrincipal();
         ReactionResponse newReaction = reactionService.reactionPost(postId, currentUser.getUserId(), request);
         ApiResponse<ReactionResponse> response = new ApiResponse<>(String.valueOf(HttpStatus.OK), newReaction, null);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/posts/{postId}/reactions")

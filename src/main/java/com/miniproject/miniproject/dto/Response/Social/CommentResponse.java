@@ -1,12 +1,14 @@
 package com.miniproject.miniproject.dto.Response.Social;
 
 import com.miniproject.miniproject.dto.Response.UserDTO;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 @Getter
 @Setter
+@Data
 public class CommentResponse {
     private String id;
     private String content;

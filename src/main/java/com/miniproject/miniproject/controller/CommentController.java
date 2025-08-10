@@ -31,7 +31,7 @@ public class CommentController {
     @GetMapping("/comments")
     public ResponseEntity<ApiResponse<List<CommentResponse>>> getAllComment() {
         ApiResponse<List<CommentResponse>> response = new ApiResponse<>(String.valueOf(HttpStatus.OK), commentService.getAllComments(), null);
-        return new ResponseEntity<>(response, HttpStatus.FOUND);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/comments/{id}/reply")
@@ -48,7 +48,7 @@ public class CommentController {
     public ResponseEntity<ApiResponse<List<CommentResponse>>> getCommentForPost(@PathVariable String postId) {
         List<CommentResponse> list = commentService.getCommentsByPostID(postId);
         ApiResponse<List<CommentResponse>> response = new ApiResponse<>(String.valueOf(HttpStatus.OK), list, null);
-        return new ResponseEntity<>(response, HttpStatus.FOUND);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/posts/{postId}/comments")
@@ -77,6 +77,6 @@ public class CommentController {
         CustomerUserDetails currentUser = (CustomerUserDetails)authentication.getPrincipal();
         CommentResponse replyComment = commentService.replyComment(currentUser.getUserId(), parentCommentId, request);
         ApiResponse<CommentResponse> response = new ApiResponse<>("Reply created successfully", replyComment, null);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
