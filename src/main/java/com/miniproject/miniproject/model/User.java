@@ -79,6 +79,10 @@ public class User extends BaseEntity{
     @JsonManagedReference(value = "user-publisher")
     private Publisher publisher;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference(value = "user-organizationMember")
+    private List<OrganizationMember> organizationMemberList;
+
     @PrePersist//Auto generate ID if ID doesn't exist
     private void prePersist() {
         if (id == null) {
