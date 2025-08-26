@@ -1,5 +1,6 @@
 package com.miniproject.miniproject.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,5 +20,13 @@ public class TaskAssignee    {
     private String id;
 
     //Relationship
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonBackReference(value = "user-taskAssignee")
+    private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "taskId")
+    @JsonBackReference(value = "task-taskAssignee")
+    private Task task;
 }

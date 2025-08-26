@@ -1,5 +1,6 @@
 package com.miniproject.miniproject.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,4 +34,8 @@ public class Attachment {
     private Timestamp uploadAt;
 
     //Realationship
+    @ManyToOne
+    @JoinColumn(name = "taskId")
+    @JsonBackReference(value = "task-attachment")
+    private Task task;
 }

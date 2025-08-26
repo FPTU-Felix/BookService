@@ -1,5 +1,6 @@
 package com.miniproject.miniproject.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,5 +20,14 @@ public class EvenParticipants {
     private String id;
 
     //Relationship
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonBackReference(value = "user-eventParticipant")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "eventId")
+    @JsonBackReference(value = "event-evenParticipants")
+    private EvenParticipants evenParticipants;
 
 }

@@ -32,4 +32,8 @@ public class Organization {
     @OneToMany(mappedBy = "organization")
     @JsonManagedReference(value = "organization-organizationMember")
     private List<OrganizationMember> organizationMemberList;
+
+    @OneToMany(mappedBy = "organization")
+    @JsonManagedReference(value = "organization-project")
+    private List<Project> projects;
 }

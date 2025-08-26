@@ -1,5 +1,6 @@
 package com.miniproject.miniproject.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,5 +29,14 @@ public class WorkFlowTransition {
     private String label;
 
     //Relationship
+    @ManyToOne
+    @JoinColumn(name = "statusId")
+    @JsonBackReference(value = "status-WorkFlowTransition")
+    private Status status;
+
+    @ManyToOne
+    @JoinColumn(name = "workFlowId")
+    @JsonBackReference(value = "workFlow-WorkFlowTransition")
+    private Workflow workflow;
 
 }

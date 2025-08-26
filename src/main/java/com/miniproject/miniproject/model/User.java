@@ -83,6 +83,26 @@ public class User extends BaseEntity{
     @JsonManagedReference(value = "user-organizationMember")
     private List<OrganizationMember> organizationMemberList;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference(value = "user-taskAssignee")
+    private List<TaskAssignee> taskAssignees;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference(value = "user-eventParticipant")
+    private List<EvenParticipants> evenParticipants;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference(value = "user-projectMember")
+    private List<ProjectMember> projectMembers;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference(value = "user-task")
+    private List<Task> tasks;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference(value = "user-taskComment")
+    private List<TaskComment> taskComments;
+
     @PrePersist//Auto generate ID if ID doesn't exist
     private void prePersist() {
         if (id == null) {

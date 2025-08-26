@@ -1,5 +1,7 @@
 package com.miniproject.miniproject.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +10,7 @@ import lombok.Setter;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "task")
@@ -49,4 +52,34 @@ public class Task {
     private int number;
 
     //Relationship
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonBackReference(value = "user-task")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "projectId")
+    @JsonBackReference(value = "project-task")
+    private Project project;
+
+    @ManyToOne
+    @JoinColumn(name = "milestoneId")
+    @JsonBackReference(value = "milestoneId-task")
+    private Task task;
+
+    @OneToMany(mappedBy = "task")
+    @JsonManagedReference(value = "task-taskAssignee")
+    private List<TaskAssignee> taskAssignees;
+
+    @OneToMany(mappedBy = "task")
+    @JsonManagedReference(value = "task-taskComment")
+    private List<TaskComment> taskComments;
+
+    @OneToMany(mappedBy = "task")
+    @JsonManagedReference(value = "task-taskHistory")
+    private List<TaskHistory> taskHistories;
+
+    @OneToMany(mappedBy = "task")
+    @JsonManagedReference(value = "task-attachment")
+    private List<Attachment> attachments;
 }

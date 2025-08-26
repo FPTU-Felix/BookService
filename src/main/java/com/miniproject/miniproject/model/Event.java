@@ -1,5 +1,6 @@
 package com.miniproject.miniproject.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,9 +8,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
-@Table(name = "Event")
+@Table(name = "event")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -36,4 +38,7 @@ public class Event {
     private String link;
 
     //relationship
+    @OneToMany(mappedBy = "event")
+    @JsonManagedReference(value = "event-evenParticipants")
+    private List<EvenParticipants> evenParticipants;
 }

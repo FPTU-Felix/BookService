@@ -1,5 +1,7 @@
 package com.miniproject.miniproject.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,13 +9,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Milestone")
+@Table(name = "milestone")
 public class Milestone {
     @Id
     @Column(name = "milestoneId")
@@ -30,5 +33,13 @@ public class Milestone {
     private Timestamp endDate;
 
     //Relationship
+    @ManyToOne
+    @JoinColumn(name = "projectId")
+    @JsonBackReference(value = "project-milestones")
+    private Project project;
+
+    @OneToMany(mappedBy = "milestone")
+    @JsonManagedReference(value = "milestone-task")
+    private List<Task> tasks;
 
 }

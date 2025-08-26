@@ -1,10 +1,14 @@
 package com.miniproject.miniproject.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Table(name = "status")
@@ -37,4 +41,12 @@ public class Status {
     private boolean isEnd;
 
     //Relationship
+    @ManyToOne
+    @JoinColumn(name = "workFlowId")
+    @JsonBackReference(value = "workFlow-status")
+    private Workflow workflow;
+
+    @OneToMany(mappedBy = "status")
+    @JsonManagedReference(value = "status-WorkFlowTransition")
+    private List<WorkFlowTransition> workFlowTransitions;
 }

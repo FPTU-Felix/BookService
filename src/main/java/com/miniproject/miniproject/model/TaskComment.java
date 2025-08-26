@@ -1,5 +1,6 @@
 package com.miniproject.miniproject.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,4 +28,13 @@ public class TaskComment {
     private Timestamp createdAt;
 
     //RelationShip
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonBackReference(value = "user-taskComment")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "taskId")
+    @JsonBackReference(value = "task-taskComment")
+    private Task task;
 }
