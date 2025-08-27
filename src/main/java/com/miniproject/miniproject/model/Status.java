@@ -44,7 +44,7 @@ public class Status {
     @ManyToOne
     @JoinColumn(name = "workFlowId")
     @JsonBackReference(value = "workFlow-status")
-    private Workflow workflow;
+    private Workflow workFlow;
 
     @OneToMany(mappedBy = "status")
     @JsonManagedReference(value = "status-WorkFlowTransition")

@@ -28,6 +28,6 @@ public class EvenParticipants {
     @ManyToOne
     @JoinColumn(name = "eventId")
     @JsonBackReference(value = "event-evenParticipants")
-    private EvenParticipants evenParticipants;
+    private Event event;
 
 }

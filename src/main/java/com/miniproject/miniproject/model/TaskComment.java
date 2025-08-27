@@ -10,7 +10,7 @@ import lombok.Setter;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "organization")
+@Table(name = "taskComment")
 @Getter
 @Setter
 @NoArgsConstructor

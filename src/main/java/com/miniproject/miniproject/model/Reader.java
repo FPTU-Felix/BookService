@@ -17,7 +17,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Reader extends BaseEntity {
+public class Reader extends BaseEntityOld {
     @Id
     @Column(name = "reader_id")
     private String id;

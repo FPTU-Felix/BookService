@@ -1,7 +1,6 @@
 package com.miniproject.miniproject.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +15,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Following extends BaseEntity{
+public class Following extends BaseEntityOld {
     @Id
     @Column(name = "following_id")
     private String id;

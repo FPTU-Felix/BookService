@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "project")
-public class Project {
+public class Project{
     @Id
     @Column(name = "projectId")
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -51,7 +51,7 @@ public class Project {
 
     @OneToOne(mappedBy = "project")
     @JsonManagedReference(value = "project-workflow")
-    private List<Workflow> workflows;
+    private Workflow workflows;
 
     @OneToMany(mappedBy = "project")
     @JsonManagedReference(value = "project-task")

@@ -21,7 +21,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Permission extends BaseEntity{
+public class Permission extends BaseEntityOld {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

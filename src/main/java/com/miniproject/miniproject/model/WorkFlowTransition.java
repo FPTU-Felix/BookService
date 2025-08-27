@@ -37,6 +37,6 @@ public class WorkFlowTransition {
     @ManyToOne
     @JoinColumn(name = "workFlowId")
     @JsonBackReference(value = "workFlow-WorkFlowTransition")
-    private Workflow workflow;
+    private Workflow workFlow;
 
 }

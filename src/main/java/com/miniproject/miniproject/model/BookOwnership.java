@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookOwnership extends BaseEntity{
+public class BookOwnership extends BaseEntityOld {
     @Id
     @Column(name = "bookownership_id")
     @GeneratedValue(strategy = GenerationType.UUID)

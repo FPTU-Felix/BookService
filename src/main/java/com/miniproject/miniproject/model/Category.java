@@ -1,6 +1,5 @@
 package com.miniproject.miniproject.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "category")
@@ -17,7 +15,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category extends BaseEntity{
+public class Category extends BaseEntityOld {
     @Id
     @Column(name = "category_id")
     @GeneratedValue(strategy = GenerationType.UUID)

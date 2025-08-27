@@ -1,7 +1,6 @@
 package com.miniproject.miniproject.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -20,7 +19,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Post extends BaseEntity{
+public class Post extends BaseEntityOld {
 
     @Id
     @Column(name = "post_id")

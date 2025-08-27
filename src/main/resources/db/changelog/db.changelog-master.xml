@@ -5,21 +5,21 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
 
   <!-- Add future includes here -->
-  <include file="db/changelog/db.changelog-1.0-remove-rate-unique-constraint.xml"
-    relativeToChangelogFile="false" />
-  <include file="db/changelog/db.changelog-1.1-add-rate-fk.xml" relativeToChangelogFile="false" />
-  <include file="db/changelog/db.changelog-1.2-fix-relationship-between-book-and-chapter.xml"
-    relativeToChangelogFile="false" />
-  <include file="db/changelog/db.changelog-1.3-rename-next-chapter-column.xml"
-    relativeToChangelogFile="false" />
-  <include file="db/changelog/db.changelog-1.4-remove-publish-by-unique-constraint.xml"
-    relativeToChangelogFile="false" />
-  <include file="db/changelog/db.changelog-1.5-change-update_at-of-book-to-timestamp.xml"
-    relativeToChangelogFile="false" />
-  <include file="db/changelog/db.changelog-1.6-add-view-to-chapter.xml"
-    relativeToChangelogFile="false" />
-  <include file="db/changelog/db.changelog-1.7-add-images-and-index-to-chapter.xml"
-    relativeToChangelogFile="false" />
-  <include file="db/changelog/db.changelog-1.8-fix-reaction-relationships.xml"
-           relativeToChangelogFile="false" />
+<!--  <include file="db/changelog/db.changelog-1.0-remove-rate-unique-constraint.xml"-->
+<!--    relativeToChangelogFile="false" />-->
+<!--  <include file="db/changelog/db.changelog-1.1-add-rate-fk.xml" relativeToChangelogFile="false" />-->
+<!--  <include file="db/changelog/db.changelog-1.2-fix-relationship-between-book-and-chapter.xml"-->
+<!--    relativeToChangelogFile="false" />-->
+<!--  <include file="db/changelog/db.changelog-1.3-rename-next-chapter-column.xml"-->
+<!--    relativeToChangelogFile="false" />-->
+<!--  <include file="db/changelog/db.changelog-1.4-remove-publish-by-unique-constraint.xml"-->
+<!--    relativeToChangelogFile="false" />-->
+<!--  <include file="db/changelog/db.changelog-1.5-change-update_at-of-book-to-timestamp.xml"-->
+<!--    relativeToChangelogFile="false" />-->
+<!--  <include file="db/changelog/db.changelog-1.6-add-view-to-chapter.xml"-->
+<!--    relativeToChangelogFile="false" />-->
+<!--  <include file="db/changelog/db.changelog-1.7-add-images-and-index-to-chapter.xml"-->
+<!--    relativeToChangelogFile="false" />-->
+<!--  <include file="db/changelog/db.changelog-1.8-fix-reaction-relationships.xml"-->
+<!--           relativeToChangelogFile="false" />-->
 </databaseChangeLog>

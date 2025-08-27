@@ -65,7 +65,7 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "milestoneId")
     @JsonBackReference(value = "milestoneId-task")
-    private Task task;
+    private Milestone milestone;
 
     @OneToMany(mappedBy = "task")
     @JsonManagedReference(value = "task-taskAssignee")
