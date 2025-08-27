@@ -7,28 +7,25 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name = "rate")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Rate extends BaseEntityOld {
+@Entity
+@Table(name = "OrganizationMember")
+public class OrganizationMember {
     @Id
-    @Column(name = "rate_id")
+    @Column(name = "organizationMemberId")
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-
-    @Column(name = "score")
-    private int score;
+//Relationship
+    @ManyToOne
+    @JoinColumn(name = "orgId")
+    @JsonBackReference(value = "organization-organizationMember")
+    private Organization organization;
 
     @ManyToOne
-    @JoinColumn( name = "reader_id")
-    @JsonBackReference(value = "reader-rates")
-    private Reader reader;
-
-    @ManyToOne
-    @JoinColumn(name = "book_id")
-    @JsonBackReference(value = "book-rates")
-    private Book book;
+    @JoinColumn(name = "user_id")
+    @JsonBackReference(value = "user-organizationMember")
+    private User user;
 }

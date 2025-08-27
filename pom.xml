@@ -162,8 +162,9 @@
 				<groupId>org.liquibase</groupId>
 				<artifactId>liquibase-maven-plugin</artifactId>
 				<version>4.27.0</version> <configuration>
-				<propertyFile>src/main/resources/liquibase.properties</propertyFile>
-			</configuration>
+				<changeLogFile>src/main/resources/db/changelog/db.changelog-master.xml</changeLogFile>
+				<driver>com.mysql.cj.jdbc.Driver</driver>
+				<url>jdbc:mysql://localhost:3306/bookservice</url> <username>root</username> <password>123456</password> </configuration>
 			</plugin>
 		</plugins>
 	</build>

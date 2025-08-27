@@ -1,14 +1,11 @@
 package com.miniproject.miniproject.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.UUID;
 
 @Entity
 @Table(name = "reaction")
@@ -16,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Reaction extends BaseEntity{
+public class Reaction extends BaseEntityOld {
     @Id
     @Column(name = "reaction_id")
     @GeneratedValue(strategy = GenerationType.UUID)

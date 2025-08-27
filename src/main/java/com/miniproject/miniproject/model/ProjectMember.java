@@ -8,27 +8,25 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "rate")
+@Table(name = "projectMember")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Rate extends BaseEntityOld {
+public class ProjectMember {
     @Id
-    @Column(name = "rate_id")
+    @Column(name = "projectMemberId")
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(name = "score")
-    private int score;
+    //Relationship
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonBackReference(value = "user-projectMember")
+    private User user;
 
     @ManyToOne
-    @JoinColumn( name = "reader_id")
-    @JsonBackReference(value = "reader-rates")
-    private Reader reader;
-
-    @ManyToOne
-    @JoinColumn(name = "book_id")
-    @JsonBackReference(value = "book-rates")
-    private Book book;
+    @JoinColumn(name = "projectId")
+    @JsonBackReference(value = "project-projectMember")
+    private Project project;
 }

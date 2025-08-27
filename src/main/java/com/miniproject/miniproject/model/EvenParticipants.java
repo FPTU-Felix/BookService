@@ -8,27 +8,26 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "rate")
+@Table(name = "EventParticipant")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Rate extends BaseEntityOld {
+public class EvenParticipants {
     @Id
-    @Column(name = "rate_id")
+    @Column(name = "eventParticipantId")
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(name = "score")
-    private int score;
+    //Relationship
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonBackReference(value = "user-eventParticipant")
+    private User user;
 
     @ManyToOne
-    @JoinColumn( name = "reader_id")
-    @JsonBackReference(value = "reader-rates")
-    private Reader reader;
+    @JoinColumn(name = "eventId")
+    @JsonBackReference(value = "event-evenParticipants")
+    private Event event;
 
-    @ManyToOne
-    @JoinColumn(name = "book_id")
-    @JsonBackReference(value = "book-rates")
-    private Book book;
 }

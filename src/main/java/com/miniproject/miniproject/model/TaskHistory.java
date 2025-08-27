@@ -7,28 +7,29 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
+
 @Entity
-@Table(name = "rate")
+@Table(name = "TaskHistory")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Rate extends BaseEntityOld {
+public class TaskHistory {
     @Id
-    @Column(name = "rate_id")
+    @Column(name = "historyId")
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(name = "score")
-    private int score;
+    @Column(name = "changeValue")
+    private String changeValue;
 
-    @ManyToOne
-    @JoinColumn( name = "reader_id")
-    @JsonBackReference(value = "reader-rates")
-    private Reader reader;
+    @Column(name = "changeAt")
+    private Timestamp changeAt;
 
+    //RelationShip
     @ManyToOne
-    @JoinColumn(name = "book_id")
-    @JsonBackReference(value = "book-rates")
-    private Book book;
+    @JoinColumn(name = "taskId")
+    @JsonBackReference(value = "task-taskHistory")
+    private Task task;
 }
