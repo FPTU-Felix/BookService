@@ -5,7 +5,7 @@ spring:
     password: 4l#]AjEiSe<GGV8D)f8Po2TN:)F]
   jpa:
     hibernate:
-      ddl-auto: validate  # production nên validate để tránh mất dữ liệu
+      ddl-auto: update  # production nên validate để tránh mất dữ liệu
     show-sql: false
     properties:
       hibernate:
