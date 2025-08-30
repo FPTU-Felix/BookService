@@ -25,19 +25,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public ApiResponse login(UserLoginRequest request) {
-        try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             request.getEmail(),
                             request.getPassword()
                     )
             );
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Invalid username or password");
-        }
-
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow(EntityNotFoundException::new);
+        System.out.println(user);
         UserDetails userDetails = new CustomerUserDetails(user);
 
         try {
