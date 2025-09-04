@@ -19,7 +19,6 @@ import java.util.List;
 public class Status {
     @Id
     @Column(name = "statusId")
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @Column(name = "statusName")
@@ -28,7 +27,7 @@ public class Status {
     @Column(name = "color")
     private String color;
 
-    @Column(name ="position")
+    @Column(name = "position")
     private String position;
 
     @Column(name = "data")
@@ -40,7 +39,7 @@ public class Status {
     @Column(name = "isEnd")
     private boolean isEnd;
 
-    //Relationship
+    // Relationship
     @ManyToOne
     @JoinColumn(name = "workFlowId")
     @JsonBackReference(value = "workFlow-status")
