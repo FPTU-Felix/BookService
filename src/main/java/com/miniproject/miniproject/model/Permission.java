@@ -3,6 +3,8 @@ package com.miniproject.miniproject.model;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,9 +33,9 @@ public class Permission extends BaseEntityOld {
     private String name;
     @Column(name = "description")
     private String description;
-    //Relationships can be added here if needed
+    // Relationships can be added here if needed
     @ManyToMany(mappedBy = "permissions")
-    @JsonBackReference(value = "role-permissions")
+    @JsonIgnore
     private List<Role> roles;
 
 }

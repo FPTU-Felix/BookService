@@ -31,12 +31,12 @@ public class Publisher extends BaseEntityOld {
     private User user;
 
     @OneToMany(mappedBy = "publisher")
-    @JsonManagedReference(value = "publisher-followings")
+    @JsonManagedReference(value = "publisher-books")
     private List<Book> booksPublished;
 
-    @PrePersist//Auto generate ID if ID doesn't exist
-    private void prePersist(){
-        if(id==null){
+    @PrePersist // Auto generate ID if ID doesn't exist
+    private void prePersist() {
+        if (id == null) {
             id = UUID.randomUUID().toString();
         }
     }
