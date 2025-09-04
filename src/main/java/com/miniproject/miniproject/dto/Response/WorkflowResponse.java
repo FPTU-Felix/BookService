@@ -15,7 +15,6 @@ import lombok.Setter;
 public class WorkflowResponse {
     private String id;
     private String workFlowName;
-    private String description;
     private List<Status> statuses;
     private List<WorkFlowTransition> workFlowTransitions;
 }
