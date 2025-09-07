@@ -2,9 +2,6 @@ package com.miniproject.miniproject.dto.Response;
 
 import java.util.List;
 
-import com.miniproject.miniproject.model.Status;
-import com.miniproject.miniproject.model.WorkFlowTransition;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +12,6 @@ import lombok.Setter;
 public class WorkflowResponse {
     private String id;
     private String workFlowName;
-    private List<Status> statuses;
-    private List<WorkFlowTransition> workFlowTransitions;
+    private List<StatusResponse> statuses;
+    private List<WorkflowTransitionResponse> workFlowTransitions;
 }

@@ -30,14 +30,6 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final PublisherRepository publisherRepository;
 
-    @Autowired
-    public BookServiceImpl(BookRepository bookRepository, BookMapper bookMapper,
-            PublisherRepository publisherRepository) {
-        this.bookMapper = bookMapper;
-        this.bookRepository = bookRepository;
-        this.publisherRepository = publisherRepository;
-    }
-
     @Override
     public ApiResponse<List<BookResponse>> getAllBooks() {
         List<BookResponse> books = bookRepository.findAll().stream()
