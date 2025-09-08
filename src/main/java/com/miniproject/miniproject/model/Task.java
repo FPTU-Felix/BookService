@@ -51,7 +51,7 @@ public class Task {
     @Column(name = "number")
     private int number;
 
-    //Relationship
+    // Relationship
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonBackReference(value = "user-task")
@@ -64,7 +64,7 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "milestoneId")
-    @JsonBackReference(value = "milestoneId-task")
+    @JsonBackReference(value = "milestone-task")
     private Milestone milestone;
 
     @OneToMany(mappedBy = "task")

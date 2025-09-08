@@ -3,13 +3,17 @@ package com.miniproject.miniproject.service.implement;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.miniproject.miniproject.dto.Request.WorkflowUpdateRequest;
 import com.miniproject.miniproject.dto.Response.ApiResponse;
 import com.miniproject.miniproject.dto.Response.WorkflowResponse;
 import com.miniproject.miniproject.exception.ResourceNotFoundException;
 import com.miniproject.miniproject.model.Status;
+import com.miniproject.miniproject.model.WorkFlowTransition;
 import com.miniproject.miniproject.model.Workflow;
+import com.miniproject.miniproject.model.Mapper.StatusMapper;
 import com.miniproject.miniproject.model.Mapper.WorkflowMapper;
+import com.miniproject.miniproject.model.Mapper.WorkflowTransitionMapper;
 import com.miniproject.miniproject.repository.StatusRepository;
 import com.miniproject.miniproject.repository.WorkflowRepository;
 import com.miniproject.miniproject.repository.WorkflowTransitionRepository;
@@ -22,9 +26,12 @@ import lombok.AllArgsConstructor;
 public class WorkflowServiceImpl implements WorkflowService {
 
     private WorkflowMapper workflowMapper;
+    private StatusMapper statusMapper;
     private WorkflowRepository workflowRepository;
     private StatusRepository statusRepository;
+    private WorkflowTransitionMapper workflowTransitionMapper;
     private WorkflowTransitionRepository workflowTransitionRepository;
+    ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public ApiResponse<WorkflowResponse> getWorkflowOfProject(String projectId) {
@@ -55,7 +62,28 @@ public class WorkflowServiceImpl implements WorkflowService {
                 status.setData(requestStatus.getData());
                 // no .save(), transactional will handle the saving
             });
-            return new ApiResponse<>("Success", workflowMapper.toDTO(result));
+            request.getUpdatedTransitions().stream().forEach(requestTransition -> {
+                WorkFlowTransition transition = workflowTransitionRepository.findById(requestTransition.getId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Transition not found while updating"));
+                transition.setLabel(requestTransition.getLabel());
+                transition.setSource(requestTransition.getSource());
+                transition.setTarget(requestTransition.getTarget());
+                // workflowTransitionRepository.save(transition);
+            });
+
+            request.getAddedStatus().stream().forEach(requestStatus -> {
+                Status status = statusMapper.toEntity(requestStatus);
+                status.setWorkFlow(result);
+                statusRepository.save(status);
+            });
+            request.getAddedTransitions().stream().forEach(requestTransition -> {
+                WorkFlowTransition workFlowTransition = workflowTransitionMapper.toEntity(requestTransition);
+                workFlowTransition.setWorkFlow(result);
+                workflowTransitionRepository.save(workFlowTransition);
+            });
+            Workflow resultAfterUpdate = workflowRepository.findByProject_Id(projectId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Workflow not found"));
+            return new ApiResponse<>("Updated Successfully", workflowMapper.toDTO(resultAfterUpdate));
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }

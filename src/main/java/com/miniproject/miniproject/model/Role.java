@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,23 +29,18 @@ public class Role extends BaseEntityOld {
     @Column(name = "description")
     private String description;
 
-    //Relationships can be added here if needed
+    // Relationships can be added here if needed
     @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
-    @JsonBackReference(value = "user-userRoles")
+    @JsonIgnore
     private List<User> users;
 
     @ManyToMany
-    @JoinTable(
-            name = "role_permissions",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "permission_id")
-    )
-    @JsonManagedReference(value = "role-permissions")
+    @JoinTable(name = "role_permissions", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"))
     private List<Permission> permissions;
 
-    @PrePersist//Auto generate ID if ID doesn't exist
-    private void prePersist(){
-        if(id==null){
+    @PrePersist // Auto generate ID if ID doesn't exist
+    private void prePersist() {
+        if (id == null) {
             id = UUID.randomUUID().toString();
         }
     }
