@@ -64,7 +64,7 @@ public class Book {
 
     @ManyToOne
     @JoinColumn(name = "published_by")
-    @JsonBackReference(value = "book-publishers")
+    @JsonBackReference(value = "publisher-books")
     private Publisher publisher;
 
     @CreationTimestamp

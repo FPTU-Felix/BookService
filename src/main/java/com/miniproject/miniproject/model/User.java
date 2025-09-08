@@ -61,7 +61,6 @@ public class User extends BaseEntityOld {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    @JsonManagedReference(value = "user-userRoles")
     private List<Role> roles; // Avoid duplicating role
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

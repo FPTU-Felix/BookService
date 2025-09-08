@@ -5,8 +5,8 @@ spring:
     password: "4l#]AjEiSe<GGV8D)f8Po2TN:)F]"
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: true
+      ddl-auto: none
+    show-sql: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
