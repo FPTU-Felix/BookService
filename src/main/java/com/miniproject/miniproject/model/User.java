@@ -99,6 +99,10 @@ public class User extends BaseEntityOld {
     @JsonManagedReference(value = "user-taskComment")
     private List<TaskComment> taskComments;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference(value = "user-project")
+    private List<Project> projects;
+
     @PrePersist//Auto generate ID if ID doesn't exist
     private void prePersist() {
         if (id == null) {
