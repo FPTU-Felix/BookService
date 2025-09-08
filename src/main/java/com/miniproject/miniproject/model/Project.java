@@ -56,4 +56,9 @@ public class Project{
     @OneToMany(mappedBy = "project")
     @JsonManagedReference(value = "project-task")
     private List<Task> tasks;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonBackReference(value = "user-project")
+    private User user;
 }
