@@ -2,6 +2,7 @@ package com.miniproject.miniproject.service.implement;
 
 import com.miniproject.miniproject.dto.Request.ProjectRequest;
 import com.miniproject.miniproject.dto.Response.ProjectResponse;
+import com.miniproject.miniproject.exception.AccessDeniedException;
 import com.miniproject.miniproject.exception.ResourceNotFoundException;
 import com.miniproject.miniproject.model.Mapper.ProjectMapper;
 import com.miniproject.miniproject.model.Organization;
@@ -60,8 +61,14 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectResponse updateProject(ProjectRequest projectRequest, String userId) {
-        return null;
+    public ProjectResponse updateProject(ProjectRequest projectRequest, String userId, String projectId) {
+        Project old = projectRepository.findById(projectId).orElseThrow(() -> new ResourceNotFoundException("Can found Project!"));
+        if (!old.getUser().getId().equals(userId)) {
+            throw new AccessDeniedException("User does not have permission to update this project");
+        }
+        projectMapper.updateProjectFromDto(projectRequest, old);//Co the cap nhat tay hoac dung mapstruct
+        Project saved = projectRepository.save(old);
+        return projectMapper.toDto(saved);
     }
 
     @Override

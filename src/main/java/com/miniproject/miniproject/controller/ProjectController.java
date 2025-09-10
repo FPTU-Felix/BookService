@@ -41,4 +41,12 @@ public class ProjectController {
         ApiResponse<ProjectResponse> apiResponse = new ApiResponse<>("Sucess", projectResponse, null);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
+
+    @PatchMapping
+    public ResponseEntity<ApiResponse<ProjectResponse>> updateProject(@RequestBody @Valid ProjectRequest projectRequest, Authentication authentication, @PathVariable String projectId) {
+        CustomerUserDetails currentUser = (CustomerUserDetails) authentication.getPrincipal();
+        ProjectResponse projectResponse = projectService.updateProject(projectRequest, currentUser.getUserId(), projectId);
+        ApiResponse<ProjectResponse> apiResponse = new ApiResponse<>("Sucess", projectResponse, null);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
 }

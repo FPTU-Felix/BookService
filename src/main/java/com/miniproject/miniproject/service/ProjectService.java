@@ -14,7 +14,7 @@ public interface ProjectService {
 
     ProjectResponse addProject(ProjectRequest projectRequest, String userId);
 
-    ProjectResponse updateProject(ProjectRequest projectRequest, String userId);
+    ProjectResponse updateProject(ProjectRequest projectRequest, String userId, String projectId);
 
     void deleteProject(String projectId);
 
