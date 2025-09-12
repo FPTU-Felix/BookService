@@ -16,6 +16,6 @@ public interface ProjectService {
 
     ProjectResponse updateProject(ProjectRequest projectRequest, String userId, String projectId);
 
-    void deleteProject(String projectId);
+    void deleteProject(String projectId, String currentUserId);
 
 }

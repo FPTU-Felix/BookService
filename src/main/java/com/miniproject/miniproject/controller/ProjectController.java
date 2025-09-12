@@ -42,12 +42,18 @@ public class ProjectController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-    @PatchMapping
+    @PatchMapping("/{projectId}")
     public ResponseEntity<ApiResponse<ProjectResponse>> updateProject(@RequestBody @Valid ProjectRequest projectRequest, Authentication authentication, @PathVariable String projectId) {
         CustomerUserDetails currentUser = (CustomerUserDetails) authentication.getPrincipal();
         ProjectResponse projectResponse = projectService.updateProject(projectRequest, currentUser.getUserId(), projectId);
         ApiResponse<ProjectResponse> apiResponse = new ApiResponse<>("Sucess", projectResponse, null);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
-    //aa
+    @DeleteMapping("/{projectId}")
+    public ResponseEntity<ApiResponse<?>> deleteProject(@PathVariable String projectId, Authentication authentication){
+        CustomerUserDetails currentUser = (CustomerUserDetails) authentication.getPrincipal();
+        projectService.deleteProject(projectId, currentUser.getUserId());
+        ApiResponse<ProjectResponse> apiResponse = new ApiResponse<>("Sucess", null, null);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
 }

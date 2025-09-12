@@ -72,7 +72,11 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void deleteProject(String projectId) {
-
+    public void deleteProject(String projectId, String currentUserId) {
+        Project p = projectRepository.findById(projectId).orElseThrow(() -> new ResourceNotFoundException("Can found Project with id=" + projectId));
+        if (!p.getUser().getId().equals(currentUserId)) {
+            throw new AccessDeniedException("You don't have permission to delete this project!");
+        }
+        projectRepository.deleteById(projectId);
     }
 }
