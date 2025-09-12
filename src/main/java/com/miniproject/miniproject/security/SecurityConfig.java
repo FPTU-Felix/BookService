@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/v1/library/auth/**",
+                                "/api/v1/auth/**",
                                 // "/api/v1/library/book/**", // Cho phép login, register
                                 "/api/v1/library/chapter/**",
                                 "/swagger-ui/**", // Nếu có swagger
