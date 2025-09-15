@@ -53,7 +53,7 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectResponse addProject(ProjectRequest projectRequest, String userId) {
         User u = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Can found User!"));
         Project p = projectMapper.toProject(projectRequest);
-        Organization o = organizationRepository.findOrganizationByProjectId(p.getId()).orElseThrow(() -> new ResourceNotFoundException("This project doesn't belong to any Organization!"));
+        Organization o = organizationRepository.findById(projectRequest.getOrganizationId()).orElseThrow(() -> new ResourceNotFoundException("This project doesn't belong to any Organization!"));
         p.setUser(u);
         p.setOrganization(o);
         Project saved = projectRepository.save(p);
